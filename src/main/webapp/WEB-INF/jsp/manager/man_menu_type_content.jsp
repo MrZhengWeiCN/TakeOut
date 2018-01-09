@@ -1,13 +1,12 @@
-<%-- include the struct tag --%>
-<%@taglib prefix="s" uri="/struts-tags" %>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 
 <%-- include the jstl --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <table class="table">
     <tr>
-        <th><s:text name="manMenuTypeName" /></th>
-        <th><s:text name="manMenuOpt" /></th>
+        <th>菜品类型</th>
+        <th>操作</th>
     </tr>
     <tr>
         <td>
@@ -22,44 +21,44 @@
                 id="ib_man_menu_type_new_btn"
                 status="new"
                 onclick='onBtnNewClick();'>
-                <s:text name="manMenuTypeNewBtn" />
+                新建
             </button>
             <button class="btn btn-primary btn-xs" disabled="disabled"
                 id="ib_man_menu_type_add_btn"
                 onclick='onBtnAddClick("opt=menuTypeAdd&page=${currPage}");'>
-                <s:text name="manMenuTypeAddBtn" />
+                添加
             </button>
         </td>
     </tr>
-    <s:iterator value="lstMenuType" id="bean">
+    <c:forEach var="type" items="menutypes">
     <tr>
         <td>
-            <label class="ib_man_menu_type_id_label" style="display:none"><s:property value="#bean.id" /></label>
+            <label class="ib_man_menu_type_id_label" style="display:none">id</label>
             <input type="text" 
                 class="form-control ib_man_menu_type_name_input" 
-                value='<s:property value="#bean.name" />'
+                value='类名'
                 readOnly="true" />
         </td>
         <td>
             <button class="btn btn-primary btn-xs" 
                 id="ib_man_menu_type_edit_btn"
                 status="edit"
-                onclick='onBtnEditClick("<s:property value="#bean.id" />");'>
-                <s:text name="manMenuTypeEditBtn" />
+                onclick='onBtnEditClick("${id }");'>
+                编辑
             </button>
             <button class="btn btn-primary btn-xs" disabled="disabled"
                 id="ib_man_menu_type_mod_btn"
-                onclick='onBtnModClick("id=<s:property value="#bean.id" />&opt=menuTypeMod&page=${currPage}");'>
-                <s:text name="manMenuTypeModBtn" />
+                onclick='onBtnModClick("id=${id }&opt=menuTypeMod&page=${currPage}");'>
+                修改
             </button>
             <button class="btn btn-primary btn-xs"
                 id="ib_man_menu_type_del_btn"
-                onclick='onBtnDelClick("id=<s:property value="#bean.id" />&opt=menuTypeDel&page=${currPage}");'>
-                <s:text name="manMenuTypeDelBtn" />
+                onclick='onBtnDelClick("id=${id }&opt=menuTypeDel&page=${currPage}");'>
+                删除
             </button>
         </td>
     </tr>
-    </s:iterator>
+    </c:forEach>
 </table>
 
 <%-- the pagination --%>

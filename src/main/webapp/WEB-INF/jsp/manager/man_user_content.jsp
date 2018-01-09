@@ -1,17 +1,14 @@
-<%-- include the struct tag --%>
-<%@taglib prefix="s" uri="/struts-tags" %>
-
-<%-- include the jstl --%>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <table class="table">
     <tr>
-        <th><s:text name="manUserUser" /></th>
-        <th><s:text name="manUserPasswd" /></th>
-        <th><s:text name="manUserAuth" /></th>
-        <th><s:text name="manUserTel" /></th>
-        <th><s:text name="manUserAddr" /></th>
-        <th><s:text name="manUserOpt" /></th>
+        <th>用户名</th>
+        <th>密码</th>
+        <th>权限</th>
+        <th>联系方式</th>
+        <th>地址</th>
+        <th>操作</th>
     </tr>
     <tr>
         <td>
@@ -30,8 +27,8 @@
         </td>
         <td>
             <select id="ib_man_user_new_auth_select" class="form-control" disabled="disabled">
-                <option value="customer" selected="selected"><s:text name="manUserCustomer" /></option>
-                <option value="admin"><s:text name="manUserAdmin" /></option>
+                <option value="customer" selected="selected">顾客</option>
+                <option value="admin">管理员</option>
             </select>
         </td>
         <td>
@@ -53,74 +50,76 @@
                 id="ib_man_user_new_btn"
                 status="new"
                 onclick='onBtnNewClick();'>
-                <s:text name="manUserNewBtn" />
+                新建
             </button>
             <button class="btn btn-primary btn-xs" disabled="disabled"
                 id="ib_man_user_add_btn"
                 onclick='onBtnAddClick("opt=userAdd&page=${currPage}");'>
-                <s:text name="manUserAddBtn" />
+               添加
             </button>
         </td>
     </tr>
-    <s:iterator value="lstUserBean" id="bean">
+    <c:forEach items="${users }" var="user">
     <tr>
         <td>
-            <label class="ib_man_user_id_label" style="display:none"><s:property value="#bean.id" /></label>
+            <label class="ib_man_user_id_label" style="display:none">${user.id }</label>
             <input type="text" 
                 class="form-control ib_man_user_user_input" 
-                value='<s:property value="#bean.name" />'
+                value='${user.name }'
                 readOnly="true" />
         </td>
         <td>
             <input type="text" 
                 class="form-control ib_man_user_passwd_input" 
-                value='<s:property value="#bean.passwd" />'
+                value='${user.password }'
                 readOnly="true" />
         </td>
         <td>
             <select class="form-control ib_man_user_auth_select" disabled="disabled">
-                <s:if test='#bean.auth=="customer"'>
-                    <option value="customer" selected="selected"><s:text name="manUserCustomer" /></option>
-                    <option value="admin"><s:text name="manUserAdmin" /></option>
-                </s:if>
-                <s:else>
-                    <option value="customer"><s:text name="manUserCustomer" /></option>
-                    <option value="admin" selected="selected"><s:text name="manUserAdmin" /></option>
-                </s:else>
+            <c:choose>
+            	<c:when test="${user.auth== 'customer' }">
+            		<option value="customer" selected="selected">顾客</option>
+                    <option value="admin">管理员</option>
+            	</c:when>
+            	<c:otherwise>
+            		<option value="customer">顾客</option>
+                    <option value="admin" selected="selected">管理员</option>
+            	</c:otherwise>
+            </c:choose>
             </select>
         </td>
         <td>
             <input type="text" 
                 class="form-control ib_man_user_tel_input" 
-                value='<s:property value="#bean.tel" />'
+                value='${user.tel }'
                 readOnly="true" />
         </td>
         <td>
             <input type="text" 
                 class="form-control ib_man_user_addr_input" 
-                value='<s:property value="#bean.addr" />'
+                value='${user.addr }'
                 readOnly="true" />
         </td>
         <td>
             <button class="btn btn-primary btn-xs" 
                 id="ib_man_user_edit_btn"
                 status="edit"
-                onclick='onBtnEditClick("<s:property value="#bean.id" />");'>
-                <s:text name="manUserEditBtn" />
+                onclick='onBtnEditClick("${user.id }");'>
+                编辑
             </button>
             <button class="btn btn-primary btn-xs" disabled="disabled"
                 id="ib_man_user_mod_btn"
-                onclick='onBtnModClick("id=<s:property value="#bean.id" />&opt=userMod&page=${currPage}");'>
-                <s:text name="manUserModBtn" />
+                onclick='onBtnModClick("id=${user.id }&opt=userMod&page=${currPage}");'>
+                修改
             </button>
             <button class="btn btn-primary btn-xs"
                 id="ib_man_user_del_btn"
-                onclick='onBtnDelClick("id=<s:property value="#bean.id" />&opt=userDel&page=${currPage}");'>
-                <s:text name="manUserDelBtn" />
+                onclick='onBtnDelClick("id=${user.id }&opt=userDel&page=${currPage}");'>
+               删除
             </button>
         </td>
     </tr>
-    </s:iterator>
+    </c:forEach>
 </table>
 
 <%-- the pagination --%>

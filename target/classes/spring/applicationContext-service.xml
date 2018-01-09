@@ -18,10 +18,10 @@
 	<context:component-scan base-package="edu.zhwei.service"/>
 	
 	<!-- 配置redis客户端单机版 -->
-	<bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+	<!-- <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
 		<constructor-arg name="host" value="127.0.0.1"></constructor-arg>
 		<constructor-arg name="port" value="6379"></constructor-arg>
-	</bean>
+	</bean> -->
 	<!-- 配置redis客户端实现类 -->
-	<bean id="jedisClientSingle" class="edu.zhwei.component.impl.JedisClientSingle"/>
+	<!-- <bean id="jedisClientSingle" class="edu.zhwei.component.impl.JedisClientSingle"/> -->
 </beans>

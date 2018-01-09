@@ -1,3 +1,4 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="zh-cn">
     <head>
@@ -15,17 +16,17 @@
             <form method="post" id="ib_reg_form" action="regProcess" role="form">
                 <div class="form-group">
                     <label for="ib_reg_user_input" id="ib_reg_label">
-                        用户信息
+                        请填写用户信息
                     </label>
-                    <input type="text" id="ib_reg_user_input" name="userName" class="form-control input-lg" placeholder="用户名"/>
+                    <input type="text" id="ib_reg_user_input" name="userName" class="form-control input-lg" placeholder="用户名"/><br>
                     <div class="ib_reg_error_div">
                         ${userNameError}
                     </div>
-                    <input type="password" id="ib_reg_passwd_input" name="userPasswd" class="form-control input-lg" placeholder="密码"/>
+                    <input type="password" id="ib_reg_passwd_input" name="userPasswd" class="form-control input-lg" placeholder="密码"/><br>
                     <div class="ib_reg_error_div">
                          ${passwordError}
                     </div>
-                    <input type="text" id="ib_reg_tel_input" name="userTel" class="form-control input-lg" placeholder="手机号码"/>
+                    <input type="text" id="ib_reg_tel_input" name="userTel" class="form-control input-lg" placeholder="手机号码"/><br>
                     <div class="ib_reg_error_div">
                         ${telError}
                     </div>
@@ -46,7 +47,7 @@
                 function() {
                     if ($("#ib_reg_user_input").val() == "" || $("#ib_reg_passwd_input").val() == ""
                         || $("#ib_reg_tel_input").val() == "" || $("#ib_reg_addr_input").val() == "") {
-                        alert("<s:text name="regInputIsNull" />");
+                        alert("请填写所有项目信息！");
                         return false;
                     }
                 }

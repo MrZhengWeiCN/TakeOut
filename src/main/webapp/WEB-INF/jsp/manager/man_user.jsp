@@ -1,10 +1,11 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="zh-cn">
     <head>
         <%-- the header --%>
         <%@ include file="/WEB-INF/jsp/header.jsp" %>
 
-        <title><s:text name="manUserTitle" /></title>
+        <title>用户管理</title>
     </head>
     <body>
         <%-- the navbar --%>
@@ -28,7 +29,7 @@
                     $("#ib_man_user_add_btn").removeAttr("disabled");
 
                     $("#ib_man_user_new_btn").attr("status", "cancel");
-                    $("#ib_man_user_new_btn").text("<s:text name="manUserCancelBtn" />");
+                    $("#ib_man_user_new_btn").text("取消");
                 }else if (status == "cancel") {
                     $("#ib_man_user_new_user_input").attr("readOnly", "true");
                     $("#ib_man_user_new_passwd_input").attr("readOnly", "true");
@@ -39,7 +40,7 @@
                     $("#ib_man_user_add_btn").attr("disabled", "disabled");
 
                     $("#ib_man_user_new_btn").attr("status", "new");
-                    $("#ib_man_user_new_btn").text("<s:text name="manUserNewBtn" />");
+                    $("#ib_man_user_new_btn").text("新建");
                 }
             }
 
@@ -92,7 +93,7 @@
                             mod_btn.removeAttr("disabled");
 
                             edit_btn.attr("status", "cancel");
-                            edit_btn.text("<s:text name="manUserCancelBtn" />");
+                            edit_btn.text("取消");
                         }else if (status == "cancel") {
                             user_input.attr("readOnly", "true");
                             passwd_input.attr("readOnly", "true");
@@ -103,7 +104,7 @@
                             mod_btn.attr("disabled", "disabled");
 
                             edit_btn.attr("status", "edit");
-                            edit_btn.text("<s:text name="manUserEditBtn" />");
+                            edit_btn.text("编辑");
                         }
                      }
                 });

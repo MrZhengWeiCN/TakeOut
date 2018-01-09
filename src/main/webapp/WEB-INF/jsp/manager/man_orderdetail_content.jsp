@@ -1,16 +1,14 @@
-<%-- include the struct tag --%>
-<%@taglib prefix="s" uri="/struts-tags" %>
-
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%-- include the jstl --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <table class="table">
     <tr>
-        <th><s:text name="manOrderDetailMenu" /></th>
-        <th><s:text name="manOrderDetailPrice" /></th>
-        <th><s:text name="manOrderDetailAmount" /></th>
-        <th><s:text name="manOrderDetailRemark" /></th>
-        <th><s:text name="manOrderDetailOpt" /></th>
+        <th>菜名</th>
+        <th>价格</th>
+        <th>数量</th>
+        <th>备注</th>
+        <th>操作</th>
     </tr>
     <tr>
         <td>
@@ -46,60 +44,61 @@
                 id="ib_man_orderdetail_new_btn"
                 status="new"
                 onclick='onBtnNewClick();'>
-                <s:text name="manOrderDetailNewBtn" />
+                新建
             </button>
             <button class="btn btn-primary btn-xs" disabled="disabled"
                 id="ib_man_orderdetail_add_btn"
-                onclick='onBtnAddClick("orderId=<s:property value="lstOrderDetail[0].orderId" />&opt=orderDetailAdd");'>
-                <s:text name="manOrderDetailAddBtn" />
+                onclick='onBtnAddClick("orderId=${orderId}&opt=orderDetailAdd");'><!-- 新建的id，一般是传过来的 -->
+               增加
             </button>
         </td>
     </tr>
-    <s:iterator value="lstOrderDetail" id="bean">
+    <!-- 订单条目 -->
+    <c:forEach items="${OrderDetails }" var="detail">
     <tr>
         <td>
-            <label class="ib_man_orderdetail_id_label" style="display:none"><s:property value="#bean.id" /></label>
+            <label class="ib_man_orderdetail_id_label" style="display:none">${detail.id }</label>
             <input type="text" 
                 class="form-control ib_man_orderdetail_menu_input" 
-                value='<s:property value="#bean.menuName" />'
+                value='${detail.manuName }'
                 readOnly="true" />
         </td>
         <td>
             <input type="text" 
                 class="form-control ib_man_orderdetail_price_input" 
-                value='<s:property value="#bean.menuPrice" />'
+                value='${detail.manuPrice }'
                 readOnly="true" />
         </td>
         <td>
             <input type="text" 
                 class="form-control ib_man_orderdetail_amount_input" 
-                value='<s:property value="#bean.amount" />'
+                value='${detail.amount }'
                 readOnly="true" />
         </td>
         <td>
             <input type="text" 
                 class="form-control ib_man_orderdetail_remark_input" 
-                value='<s:property value="#bean.remark" />'
+                value='${detail.remark }'
                 readOnly="true" />
         </td>
         <td>
             <button class="btn btn-primary btn-xs" 
                 id="ib_man_orderdetail_edit_btn"
                 status="edit"
-                onclick='onBtnEditClick("<s:property value="#bean.id" />");'>
-                <s:text name="manOrderDetailEditBtn" />
+                onclick='onBtnEditClick("${detail.id }");'>
+                编辑
             </button>
             <button class="btn btn-primary btn-xs" disabled="disabled"
                 id="ib_man_orderdetail_mod_btn"
-                onclick='onBtnModClick("id=<s:property value="#bean.id" />&orderId=<s:property value="#bean.orderId" />&opt=orderDetailMod");'>
-                <s:text name="manOrderDetailModBtn" />
+                onclick='onBtnModClick("id=${detail.id }&orderId=${detail.orderId }&opt=orderDetailMod");'>
+                修改
             </button>
             <button class="btn btn-primary btn-xs"
                 id="ib_man_orderdetail_del_btn"
-                onclick='onBtnDelClick("id=<s:property value="#bean.id" />&orderId=<s:property value="#bean.orderId" />&opt=orderDetailDel");'>
-                <s:text name="manOrderDetailDelBtn" />
+                onclick='onBtnDelClick("id=${detail.id }&orderId=${detail.orderId }&opt=orderDetailDel");'>
+                删除
             </button>
         </td>
     </tr>
-    </s:iterator>
+    </c:forEach>
 </table>

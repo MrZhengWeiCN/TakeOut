@@ -1,3 +1,4 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
@@ -24,13 +25,15 @@
 			</tr>
 			<c:forEach var="menu" items="menus">
 				<tr>
-					<td>${menu.name}</td>
-					<td>${menu.price}</td>
-					<td>${menu.amount}</td>
-					<td>${menu.remark}</td>
+					<td>菜名<%-- ${menu.name} --%></td>
+					<td>价格<%-- ${menu.price} --%></td>
+					<td>数量<%-- ${menu.amount} --%></td>
+					<td>备注<%-- ${menu.remark} --%></td>
 				</tr>
 			</c:forEach>
 		</table>
+		<br>
+		<a href="${backURL}">返回</a>
 	</div>
 
 </body>

@@ -1,56 +1,53 @@
-<%-- include the struct tag --%>
-<%@taglib prefix="s" uri="/struts-tags" %>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 
 <%-- include the jstl --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <table class="table">
     <tr>
-        <th><s:text name="manOrderId" /></th>
-        <th><s:text name="manOrderUser" /></th>
-        <th><s:text name="manOrderTime" /></th>
-        <th><s:text name="manOrderStatus" /></th>
-        <th><s:text name="manOrderTel" /></th>
-        <th><s:text name="manOrderAddr" /></th>
-        <th><s:text name="manOrderOpt" /></th>
+        <th>订单号</th>
+        <th>客户</th>
+        <th>下单时间</th>
+        <th>状态</th>
+        <th>联系电话</th>
+        <th>地址</th>
+        <th>操作</th>
     </tr>
-    <s:iterator value="lstOrderBean" id="bean" status="st">
+  
+    <c:forEach var="order" items="${orders }">
     <tr>
         <td>
-            <a href='manOrderDetailPageEnter?orderId=<s:property value="#bean.id" />'>
-                <s:property value="#bean.id" />
+            <a href='manOrderDetailPageEnter?orderId=${order.id }'>
+                ${order.id }
             </a>
         </td>
-        <td><s:property value="#bean.userName" /></td>
-        <td><s:property value="#bean.time" /></td>
-        <s:if test="#bean.accept == 1">
-            <td><s:text name="manOrderAccept" /></td>
-        </s:if>
-        <s:else>
-            <td><s:text name="manOrderUnAccept" /></td>
-        </s:else>
-        <td><s:property value="#bean.tel" /></td>
-        <td><s:property value="#bean.addr" /></td>
+        <td>${order.username }</td>
+        <td>${order.time }</td>
+        <td>${order.accept==1?"已处理":"未处理" }</td>
+        <td>${order.tel }</td>
+        <td>${order.addr }</td>
         <td>
-        <s:if test="#bean.accept == 1">
-            <button class="btn btn-primary btn-xs" 
-                onclick='onBtnChangeClick("id=<s:property value="#bean.id" />&opt=orderUnAccept&page=${currPage}");'>
-                <s:text name="manOrderUnAcceptBtn" />
+        <c:choose>
+        <c:when test="${order.accept==1}">
+        	 <button class="btn btn-primary btn-xs" 
+                onclick='onBtnChangeClick("id=${order.id}&opt=orderUnAccept&page=${currPage}");'>
+                取消处理
             </button>
-        </s:if>
-        <s:else>
-            <button class="btn btn-primary btn-xs" 
-                onclick='onBtnChangeClick("id=<s:property value="#bean.id" />&opt=orderAccept&page=${currPage}");'>
-                <s:text name="manOrderAcceptBtn" />
+        </c:when>
+        <c:otherwise>
+        	<button class="btn btn-primary btn-xs" 
+                onclick='onBtnChangeClick("id=${order.id}&opt=orderAccept&page=${currPage}");'>
+                处理
             </button>
-        </s:else>
+        </c:otherwise>
+        </c:choose>
             <button class="btn btn-primary btn-xs" 
-                onclick='onBtnChangeClick("id=<s:property value="#bean.id" />&opt=orderDel&page=${currPage}");'>
-                <s:text name="manOrderDelBtn" />
+                onclick='onBtnChangeClick("id=${order.id}&opt=orderDel&page=${currPage}");'>
+                删除订单
             </button>
         </td>
     </tr>
-    </s:iterator>
+    </c:forEach>
 </table>
 </br>
 

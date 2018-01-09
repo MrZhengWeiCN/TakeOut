@@ -1,10 +1,11 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="zh-cn">
     <head>
         <%-- the header --%>
         <%@ include file="/WEB-INF/jsp/header.jsp" %>
 
-        <title><s:text name="manMenuTypeTitle" /></title>
+        <title>菜单类型管理</title>
     </head>
     <body>
         <%-- the navbar --%>
@@ -16,6 +17,7 @@
  
         <%-- the javascript --%>
         <script type="text/javascript">
+        	//新建操作
             function onBtnNewClick() {
                 var status = $("#ib_man_menu_type_new_btn").attr("status");
                 if (status == "new") {
@@ -24,14 +26,14 @@
                     $("#ib_man_menu_type_add_btn").removeAttr("disabled");
 
                     $("#ib_man_menu_type_new_btn").attr("status", "cancel");
-                    $("#ib_man_menu_type_new_btn").text("<s:text name="manMenuTypeCancelBtn" />");
+                    $("#ib_man_menu_type_new_btn").text("取消");
                 }else if (status == "cancel") {
                     $("#ib_man_menu_type_new_name_input").attr("readOnly", "true");
 
                     $("#ib_man_menu_type_add_btn").attr("disabled", "disabled");
 
                     $("#ib_man_menu_type_new_btn").attr("status", "new");
-                    $("#ib_man_menu_type_new_btn").text("<s:text name="manMenuTypeNewBtn" />");
+                    $("#ib_man_menu_type_new_btn").text("新建");
                 }
             }
 
@@ -56,30 +58,23 @@
                     success: fnChangeFinish
                 });
             }
-
             function onBtnEditClick(data) {
                 $(".ib_man_menu_type_id_label").each(function() {
                      if ($(this).text() == data) {
                         var name_input = $(this).next();
-
                         var edit_btn = name_input.parent().next().children("#ib_man_menu_type_edit_btn");
                         var mod_btn = edit_btn.next();
-
                         var status = edit_btn.attr("status");
                         if (status == "edit") {
                             name_input.removeAttr("readOnly");
-
                             mod_btn.removeAttr("disabled");
-
                             edit_btn.attr("status", "cancel");
-                            edit_btn.text("<s:text name="manMenuTypeCancelBtn" />");
+                            edit_btn.text("取消");
                         }else if (status == "cancel") {
                             name_input.attr("readOnly", "true");
-
                             mod_btn.attr("disabled", "disabled");
-
                             edit_btn.attr("status", "edit");
-                            edit_btn.text("<s:text name="manMenuTypeEditBtn" />");
+                            edit_btn.text("编辑");
                         }
                      }
                 });

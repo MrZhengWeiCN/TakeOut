@@ -1,10 +1,11 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="zh-cn">
     <head>
         <%-- the header --%>
         <%@ include file="/WEB-INF/jsp/header.jsp" %>
 
-        <title><s:text name="manOrderTitle" /></title>
+        <title>订单管理</title>
     </head>
     <body>
         <%-- the navbar --%>
