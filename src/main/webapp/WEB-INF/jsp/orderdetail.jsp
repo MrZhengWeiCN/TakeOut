@@ -23,7 +23,7 @@
 				<th>数量</th>
 				<th>评价</th>
 			</tr>
-			<c:forEach var="menu" items="menus">
+			<c:forEach var="orderDetail" items="${orderDetails }">
 				<tr>
 					<td>菜名<%-- ${menu.name} --%></td>
 					<td>价格<%-- ${menu.price} --%></td>

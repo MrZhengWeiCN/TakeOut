@@ -1,10 +1,11 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <%-- the header --%>
         <%@ include file="/WEB-INF/jsp/header.jsp" %>
 
-        <title><s:text name="manPicTitle" /></title>
+        <title>图片管理</title>
     </head>
     <body>
         <%-- the navbar --%>

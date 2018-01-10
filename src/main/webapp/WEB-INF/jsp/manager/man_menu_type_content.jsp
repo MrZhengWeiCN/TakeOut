@@ -30,30 +30,30 @@
             </button>
         </td>
     </tr>
-    <c:forEach var="type" items="menutypes">
+    <c:forEach var="type" items="${menutypes }">
     <tr>
         <td>
             <label class="ib_man_menu_type_id_label" style="display:none">id</label>
             <input type="text" 
                 class="form-control ib_man_menu_type_name_input" 
-                value='类名'
+                value='${type.menuTypeName }'
                 readOnly="true" />
         </td>
         <td>
             <button class="btn btn-primary btn-xs" 
                 id="ib_man_menu_type_edit_btn"
                 status="edit"
-                onclick='onBtnEditClick("${id }");'>
+                onclick='onBtnEditClick("${type.menuTypeId }");'>
                 编辑
             </button>
             <button class="btn btn-primary btn-xs" disabled="disabled"
                 id="ib_man_menu_type_mod_btn"
-                onclick='onBtnModClick("id=${id }&opt=menuTypeMod&page=${currPage}");'>
+                onclick='onBtnModClick("id=${type.menuTypeId }&opt=menuTypeMod&page=${currPage}");'>
                 修改
             </button>
             <button class="btn btn-primary btn-xs"
                 id="ib_man_menu_type_del_btn"
-                onclick='onBtnDelClick("id=${id }&opt=menuTypeDel&page=${currPage}");'>
+                onclick='onBtnDelClick("id=${type.menuTypeId  }&opt=menuTypeDel&page=${currPage}");'>
                 删除
             </button>
         </td>

@@ -17,19 +17,14 @@
                 <div class="form-group">
                     <label for="ib_reg_user_input" id="ib_reg_label">
                         请填写用户信息
-                    </label>
+                    </label><br>
+                    <input type="hidden" name="userAuth" value="1" />
                     <input type="text" id="ib_reg_user_input" name="userName" class="form-control input-lg" placeholder="用户名"/><br>
-                    <div class="ib_reg_error_div">
-                        ${userNameError}
-                    </div>
+                    <br>
                     <input type="password" id="ib_reg_passwd_input" name="userPasswd" class="form-control input-lg" placeholder="密码"/><br>
-                    <div class="ib_reg_error_div">
-                         ${passwordError}
-                    </div>
+                    <br>
                     <input type="text" id="ib_reg_tel_input" name="userTel" class="form-control input-lg" placeholder="手机号码"/><br>
-                    <div class="ib_reg_error_div">
-                        ${telError}
-                    </div>
+                    <br>
                     <input type="text" id="ib_reg_addr_input" name="userAddr" class="form-control input-lg" placeholder="地址"/>
                     <div class="ib_reg_error_div">
                         ${registerError }

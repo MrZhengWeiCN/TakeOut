@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <nav id="ib_navbar_nav" class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
         <a href="indexPageEnter" id="ib_navbar_link_index_a" class="navbar-brand"><s:property value="strTitle" /></a>
@@ -8,15 +9,14 @@
                         菜品分类 <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="manOptionPageEnter">全部(数量)</a></li>
-                        <li><a href="manUserPageEnter">小炒(15)</a></li>
-                        <li><a href="manOrderPageEnter">点心(11)</a></li>
-                        <li><a href="manPicPageEnter">面食(9)</a></li>
-                        <li><a href="manMenuPageEnter">饮料(20)</a></li>
-                        <li><a href="manMenuTypePageEnter">小吃(15)</a></li>
+                        <li><a href="/">全部</a></li>
+                    <c:forEach items="${sessionScope.types }" var="type">
+                        <li><a href="/?typeId=${type.menuTypeId}">${type.menuTypeName}(${type.menuTypeNum})</a></li>
+                    </c:forEach>
                     </ul>
                 </li>
-            <c:if test="${loginUser!='admin'}">
+                <!-- 登陆的是管理员 -->
+            <c:if test="${sessionScope.user.userAuth=='0'}">
                 <li class="dropdown">
                     <a href="#" id="ib_navbar_manager_menu_a" class="dropdown-toggle" data-toggle="dropdown">
                         管理 <span class="caret"></span>
@@ -31,7 +31,7 @@
                 </li>
             </c:if>
             <!-- 如果用户已经登陆 -->
-            <c:if test="${loginUser!=null}">
+            <c:if test="${sessionScope.user!=null}">
                 <li class="dropdown">
                     <a href="#" id="ib_navbar_option_menu_a" class="dropdown-toggle" data-toggle="dropdown">
                         选项 <span class="caret"></span>
@@ -45,7 +45,7 @@
                 </li>
             </c:if>
             <c:choose>
-            <c:when test="${loginUser==null}">
+            <c:when test="${sessionScope.user==null}">
                 <li>
                     <a href="loginPageEnter" id="ib_navbar_login_a" class="navbar-link">
                         登陆
@@ -63,6 +63,11 @@
             <li>
                 <a href="regPageEnter" id="ib_navbar_reg_a" class="navbar-link">
                    注册
+                </a>
+            </li>
+            <li>
+                <a href="perInfoPageEnter" id="ib_navbar_reg_a" class="navbar-link">
+                   ${sessionScope.user.userName}
                 </a>
             </li>
         </ul>

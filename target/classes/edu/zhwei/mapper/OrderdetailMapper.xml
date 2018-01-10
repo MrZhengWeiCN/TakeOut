@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.zhwei.mapper.OrderdetailMapper" >
+  <resultMap id="BaseResultMap" type="edu.zhwei.pojo.Orderdetail" >
+    <id column="detail_id" property="detailId" jdbcType="INTEGER" />
+    <result column="detail_order_id" property="detailOrderId" jdbcType="INTEGER" />
+    <result column="detail_menu_name" property="detailMenuName" jdbcType="VARCHAR" />
+    <result column="detail_menu_price" property="detailMenuPrice" jdbcType="INTEGER" />
+    <result column="detail_amount" property="detailAmount" jdbcType="INTEGER" />
+    <result column="detail_remark" property="detailRemark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    detail_id, detail_order_id, detail_menu_name, detail_menu_price, detail_amount, detail_remark
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="edu.zhwei.pojo.OrderdetailExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from orderdetail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from orderdetail
+    where detail_id = #{detailId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from orderdetail
+    where detail_id = #{detailId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="edu.zhwei.pojo.OrderdetailExample" >
+    delete from orderdetail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="edu.zhwei.pojo.Orderdetail" >
+    insert into orderdetail (detail_id, detail_order_id, detail_menu_name, 
+      detail_menu_price, detail_amount, detail_remark
+      )
+    values (#{detailId,jdbcType=INTEGER}, #{detailOrderId,jdbcType=INTEGER}, #{detailMenuName,jdbcType=VARCHAR}, 
+      #{detailMenuPrice,jdbcType=INTEGER}, #{detailAmount,jdbcType=INTEGER}, #{detailRemark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="edu.zhwei.pojo.Orderdetail" >
+    insert into orderdetail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="detailId != null" >
+        detail_id,
+      </if>
+      <if test="detailOrderId != null" >
+        detail_order_id,
+      </if>
+      <if test="detailMenuName != null" >
+        detail_menu_name,
+      </if>
+      <if test="detailMenuPrice != null" >
+        detail_menu_price,
+      </if>
+      <if test="detailAmount != null" >
+        detail_amount,
+      </if>
+      <if test="detailRemark != null" >
+        detail_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="detailId != null" >
+        #{detailId,jdbcType=INTEGER},
+      </if>
+      <if test="detailOrderId != null" >
+        #{detailOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="detailMenuName != null" >
+        #{detailMenuName,jdbcType=VARCHAR},
+      </if>
+      <if test="detailMenuPrice != null" >
+        #{detailMenuPrice,jdbcType=INTEGER},
+      </if>
+      <if test="detailAmount != null" >
+        #{detailAmount,jdbcType=INTEGER},
+      </if>
+      <if test="detailRemark != null" >
+        #{detailRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="edu.zhwei.pojo.OrderdetailExample" resultType="java.lang.Integer" >
+    select count(*) from orderdetail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update orderdetail
+    <set >
+      <if test="record.detailId != null" >
+        detail_id = #{record.detailId,jdbcType=INTEGER},
+      </if>
+      <if test="record.detailOrderId != null" >
+        detail_order_id = #{record.detailOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="record.detailMenuName != null" >
+        detail_menu_name = #{record.detailMenuName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.detailMenuPrice != null" >
+        detail_menu_price = #{record.detailMenuPrice,jdbcType=INTEGER},
+      </if>
+      <if test="record.detailAmount != null" >
+        detail_amount = #{record.detailAmount,jdbcType=INTEGER},
+      </if>
+      <if test="record.detailRemark != null" >
+        detail_remark = #{record.detailRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update orderdetail
+    set detail_id = #{record.detailId,jdbcType=INTEGER},
+      detail_order_id = #{record.detailOrderId,jdbcType=INTEGER},
+      detail_menu_name = #{record.detailMenuName,jdbcType=VARCHAR},
+      detail_menu_price = #{record.detailMenuPrice,jdbcType=INTEGER},
+      detail_amount = #{record.detailAmount,jdbcType=INTEGER},
+      detail_remark = #{record.detailRemark,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.zhwei.pojo.Orderdetail" >
+    update orderdetail
+    <set >
+      <if test="detailOrderId != null" >
+        detail_order_id = #{detailOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="detailMenuName != null" >
+        detail_menu_name = #{detailMenuName,jdbcType=VARCHAR},
+      </if>
+      <if test="detailMenuPrice != null" >
+        detail_menu_price = #{detailMenuPrice,jdbcType=INTEGER},
+      </if>
+      <if test="detailAmount != null" >
+        detail_amount = #{detailAmount,jdbcType=INTEGER},
+      </if>
+      <if test="detailRemark != null" >
+        detail_remark = #{detailRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where detail_id = #{detailId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.zhwei.pojo.Orderdetail" >
+    update orderdetail
+    set detail_order_id = #{detailOrderId,jdbcType=INTEGER},
+      detail_menu_name = #{detailMenuName,jdbcType=VARCHAR},
+      detail_menu_price = #{detailMenuPrice,jdbcType=INTEGER},
+      detail_amount = #{detailAmount,jdbcType=INTEGER},
+      detail_remark = #{detailRemark,jdbcType=VARCHAR}
+    where detail_id = #{detailId,jdbcType=INTEGER}
+  </update>
+</mapper>

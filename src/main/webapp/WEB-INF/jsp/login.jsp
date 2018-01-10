@@ -24,7 +24,7 @@
                     <br>
                     <input type="password" id="ib_login_passwd_input" name="userPasswd" class="form-control input-lg" placeholder="密码" />
                     <div class="ib_login_error_div">
-                        <span><strong>错误信息${logError }</strong></span>
+                        <span><strong>${logError }</strong></span>
                     </div>
                 </div>
                 <button id="ib_login_submit_btn" type="submit" class="btn btn-primary btn-lg">
