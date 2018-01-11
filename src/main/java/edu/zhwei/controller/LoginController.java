@@ -30,7 +30,7 @@ public class LoginController {
 			model.addAttribute("logError", result.getMsg());
 			return "login";
 		} else {
-			return "index";
+			return "redirect:/";
 		}
 	}
 

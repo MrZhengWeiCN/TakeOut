@@ -12,8 +12,10 @@ public interface MenuService {
 
 	List<Menutype> findAll();
 
-	BookResult menuChange(String menuAdd, Menu menu);
+	BookResult menuChange(String menuAdd, Menu menu,Integer id);
 	
 	List<Menu> findAllMenu();
+
+	List<Menu> selectTypeMenu(Integer typeId);
 
 }

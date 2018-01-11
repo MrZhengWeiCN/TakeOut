@@ -19,6 +19,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<%-- the navbar --%>
         <%@ include file="/WEB-INF/jsp/navbar.jsp" %>
     <h3>${sucInfo }</h3><br>
-    <a href="${clickURL }"><strong>${click }</strong></a>
+    <a href="${clickURL }"><strong>${click }</strong></a>还是
+    <a href="${OclickURL }"><strong>${Oclick }</strong></a>？
   </body>
 </html>

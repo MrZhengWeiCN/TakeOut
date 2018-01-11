@@ -7,34 +7,36 @@
         <th>菜单</th>
         <th>价格</th>
         <th>数量</th>
+        <th>总价</th>
         <th>操作</th>
         <th>备注</th>
     </tr>
-    <c:forEach var="menu" items="shopMenu">
+    <c:forEach var="detail" items="${details }">
     <tr>
-        <td><%-- ${menu.name } --%>鱼香肉丝</td>
-        <td><%-- ${menu.price } --%>5元</td>
-        <td><%-- ${menu.amount } --%>1</td>
+        <td>${detail.menuName }</td>
+        <td>￥${detail.menuPrice/10 }元</td>
+        <td>${detail.num}</td>
+        <td>￥${detail.totalPrice/10 }元</td>
         <td>
             <button class="btn btn-primary btn-xs" 
-                 onclick='onBtnChangeClick("menuName=名字&opt=amountInc&page=${currPage}");'>
+                 onclick='onBtnChangeClick("menuId=${detail.menuId }&opt=Inc&page=${currPage}");'>
                 +
             </button>
             <button class="btn btn-primary btn-xs" 
-                onclick='onBtnChangeClick("menuName=<%-- ${menu.name } --%>&opt=amountDec&page=${currPage}");'>
+                onclick='onBtnChangeClick("menuId=${detail.menuId }&opt=Dec&page=${currPage}");'>
                 -
             </button>
             <button class="btn btn-primary btn-xs" 
-                onclick='onBtnChangeClick("menuName=<%-- ${menu.name } --%>&opt=amountDel&page=${currPage}");'>
+                onclick='onBtnChangeClick("menuId=${detail.menuId }&opt=Del&page=${currPage}");'>
                 x
             </button>
         </td>
         <td>
             <input type="text" 
-                menuName='<%-- ${menu.name } --%>' 
-                remark='<%-- ${menu.remark } --%>' 
-                onblur='onInputRemarkChange("menuName=<%-- ${menu.name } --%>&opt=remarkChange&page=${currPage}");'
-                class="form-control ib_shop_remark_input" value="<%-- ${menu.remark } --%>" />
+                menuName='${detail.menuName }' 
+                remark='${detail.remark }' 
+                onblur='onInputRemarkChange("menuId=${detail.menuId }&opt=remarkChange&page=${currPage}");'
+                class="form-control ib_shop_remark_input" value="${detail.remark }" />
         </td>
     </tr>
     </c:forEach>
@@ -46,7 +48,7 @@
         address='totalPrice' 
         id="ib_shop_price_input"
         class="form-control" 
-        value="${totalPrice }"
+        value="￥${totalPrice/10 }元"
         readOnly="true" />
 </div>
 </br>
@@ -57,7 +59,7 @@
         id="ib_shop_addr_input"
         class="form-control" 
         onblur='onInputAddrChange("opt=addrChange&page=${currPage}");'
-        value="默认收货地址" />
+        value="${sessionScope.user.userAddr }" />
 </div>
 </br>
 <c:if test="${totalPrice > 0 }">

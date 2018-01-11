@@ -28,7 +28,7 @@ public class MenuContent {
 	 * opt=menuAdd&menuName=
 	 */
 	@RequestMapping("/manMenuChange")
-	public void menuChange(String opt,Menu menu){
-		BookResult result = menuService.menuChange(opt,menu);
+	public void menuChange(String opt,Menu menu,Integer id){
+		menuService.menuChange(opt,menu,id);
 	}
 }

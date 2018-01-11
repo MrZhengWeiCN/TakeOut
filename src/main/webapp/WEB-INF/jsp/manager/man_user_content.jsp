@@ -19,7 +19,7 @@
                 readOnly="true" />
         </td>
         <td>
-            <input type="text" 
+            <input type="password" 
                 id="ib_man_user_new_passwd_input"
                 class="form-control" 
                 value=""
@@ -27,8 +27,8 @@
         </td>
         <td>
             <select id="ib_man_user_new_auth_select" class="form-control" disabled="disabled">
-                <option value="customer" selected="selected">顾客</option>
-                <option value="admin">管理员</option>
+                <option value="1" selected="selected">顾客</option>
+                <option value="0">管理员</option>
             </select>
         </td>
         <td>
@@ -62,22 +62,22 @@
     <c:forEach items="${users }" var="user">
     <tr>
         <td>
-            <label class="ib_man_user_id_label" style="display:none">${user.id }</label>
+            <label class="ib_man_user_id_label" style="display:none">${user.userId }</label>
             <input type="text" 
                 class="form-control ib_man_user_user_input" 
-                value='${user.name }'
+                value='${user.userName }'
                 readOnly="true" />
         </td>
         <td>
-            <input type="text" 
+            <input type="password""
                 class="form-control ib_man_user_passwd_input" 
-                value='${user.password }'
+                value='${user.userPasswd }'
                 readOnly="true" />
         </td>
         <td>
             <select class="form-control ib_man_user_auth_select" disabled="disabled">
             <c:choose>
-            	<c:when test="${user.auth== 'customer' }">
+            	<c:when test="${user.userAuth== 1 }">
             		<option value="customer" selected="selected">顾客</option>
                     <option value="admin">管理员</option>
             	</c:when>
@@ -91,30 +91,30 @@
         <td>
             <input type="text" 
                 class="form-control ib_man_user_tel_input" 
-                value='${user.tel }'
+                value='${user.userTel }'
                 readOnly="true" />
         </td>
         <td>
             <input type="text" 
                 class="form-control ib_man_user_addr_input" 
-                value='${user.addr }'
+                value='${user.userAddr }'
                 readOnly="true" />
         </td>
         <td>
             <button class="btn btn-primary btn-xs" 
                 id="ib_man_user_edit_btn"
                 status="edit"
-                onclick='onBtnEditClick("${user.id }");'>
+                onclick='onBtnEditClick("${user.userId }");'>
                 编辑
             </button>
             <button class="btn btn-primary btn-xs" disabled="disabled"
                 id="ib_man_user_mod_btn"
-                onclick='onBtnModClick("id=${user.id }&opt=userMod&page=${currPage}");'>
+                onclick='onBtnModClick("id=${user.userId }&opt=userMod&page=${currPage}");'>
                 修改
             </button>
             <button class="btn btn-primary btn-xs"
                 id="ib_man_user_del_btn"
-                onclick='onBtnDelClick("id=${user.id }&opt=userDel&page=${currPage}");'>
+                onclick='onBtnDelClick("id=${user.userId }&opt=userDel&page=${currPage}");'>
                删除
             </button>
         </td>

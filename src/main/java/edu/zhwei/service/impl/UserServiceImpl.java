@@ -41,4 +41,11 @@ public class UserServiceImpl implements UserService {
 		request.removeAttribute("user");
 		return BookResult.ok();
 	}
+
+	@Override
+	public List<User> findAll() {
+		UserExample example = new UserExample();
+		List<User> users = userMapper.selectByExample(example );
+		return users;
+	}
 }

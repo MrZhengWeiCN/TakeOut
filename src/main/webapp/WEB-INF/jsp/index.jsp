@@ -16,23 +16,24 @@
 		<%-- <s:iterator value="lstMenuTypeBean" id="bean"> --%>
 		<div class="row">
 			<!-- 分类名 -->
-			<h2 class="ib_idx_caption_h">这里是菜品分类${classify.name }</h2>
+			<h2 class="ib_idx_caption_h">${type.menuTypeNum==null?"全部":"type.menuTypeNum" }</h2>
 			<!-- 开始一个一个菜品 -->
-			<%-- <c:forEach var="food" items="foods"> --%>
+			<c:forEach var="menu" items="${menus}">
 				<div class="col-md-3">
 					<div class="thumbnail">
-						<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515482070106&di=db25c1bc4d6a410ed95a9edbd3d40962&imgtype=0&src=http%3A%2F%2Fimg3.redocn.com%2Ftupian%2F20150121%2Fyuxiangrousi_3641848.jpg">
-						<h4 class="ib_idx_caption_h">鱼香肉丝${food.name }</h4>
-						<h5 class="ib_idx_caption_h">价格: ￥7${food.price }元</h5>
+						<img src="${menu.menuPicAddr }">
+						<h4 class="ib_idx_caption_h">${menu.menuName }</h4>
+						<h5 class="ib_idx_caption_h">价格:￥${menu.menuPrice/10 }元</h5>
 						<p class="ib_idx_caption_h">
-							<button class="btn btn-primary" menuName='${food.name }'
-								menuPrice='${food.price }'>
-								下单 <span class="badge">余量：5${food.amount } </span>
-							</button>
+							<%-- <button class="btn btn-primary" menuName='${menu.menuName }' menuId="${menu.menuId }"
+								menuPrice='${menu.menuPrice }'>
+								下单 <span class="badge">余量</span>
+							</button> --%>
+							<a href="/menuSubmit?menuName=${menu.menuName }&menuId=${menu.menuId }&menuPrice=${menu.menuPrice }" class="btn btn-primary">Shop!</a>
 						</p>
 					</div>
 				</div>
-			<%-- </c:forEach> --%>
+			</c:forEach>
 		</div>
 
 		<%-- the pagination --%>
@@ -49,7 +50,7 @@
 				if (menuName != null && menuName[1] != null) {
 					$("button").each(function() {
 						if ($(this).attr("menuName") == menuName[1]) {
-							$(this).children("span").text(data);
+							$(this).children("span").text("done！");
 						}
 					});
 				}
@@ -62,7 +63,7 @@
 							var ajaxUrl = "menuSubmit";
 							var ajaxData = "menuName="
 									+ $(this).attr("menuName") + "&"
-									+ "menuPrice=" + $(this).attr("menuPrice");
+									+ "menuPrice=" + $(this).attr("menuPrice")+ "&"+"menuId=" + $(this).attr("menuId");
 
 							jQuery
 									.ajax({
@@ -70,6 +71,7 @@
 										url : ajaxUrl,
 										data : ajaxData,
 										dataType : "html",
+										async: false,
 										contentType : "application/x-www-form-urlencoded; charset=utf-8",
 										success : fnSubmitBtn
 									});

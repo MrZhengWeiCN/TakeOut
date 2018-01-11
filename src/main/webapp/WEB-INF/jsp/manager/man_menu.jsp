@@ -126,10 +126,10 @@
 										var type_select = pic_select.parent()
 												.next().children()
 
-										data = data + "&name="
-												+ name_input.val() + "&price="
-												+ price_input.val() + "&pic="
-												+ pic_select.val() + "&type="
+										data = data + "&menuName="
+												+ name_input.val() + "&menuPrice="
+												+ price_input.val() + "&menuPicAddr="
+												+ pic_select.val() + "&menuTypeId="
 												+ type_select.val();
 
 										jQuery
@@ -139,7 +139,7 @@
 													data : data,
 													dataType : "html",
 													contentType : "application/x-www-form-urlencoded; charset=utf-8",
-													success : fnChangeFinish
+													success : fnChangeFinish()
 												});
 									}
 								});
@@ -156,7 +156,7 @@
 						data : data,
 						dataType : "html",
 						contentType : "application/x-www-form-urlencoded; charset=utf-8",
-						success : fnChangeFinish
+						success : fnChangeFinish()
 					});
 		}
 	</script>
