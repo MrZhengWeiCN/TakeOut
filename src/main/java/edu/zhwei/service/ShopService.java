@@ -14,6 +14,6 @@ public interface ShopService {
 
 	List<ShopDetail> findAllShopDetail(HttpServletRequest request);
 
-	BookResult change(Integer menuId, String opt, HttpServletRequest request,
+	BookResult change(Integer menuId, String opt, HttpServletRequest request,String remark,
 			HttpServletResponse response);
 }

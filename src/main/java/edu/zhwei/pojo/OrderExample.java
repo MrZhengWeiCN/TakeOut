@@ -494,6 +494,66 @@ public class OrderExample {
             addCriterion("order_addr not between", value1, value2, "orderAddr");
             return (Criteria) this;
         }
+
+        public Criteria andOrderPriceIsNull() {
+            addCriterion("order_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderPriceIsNotNull() {
+            addCriterion("order_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderPriceEqualTo(Integer value) {
+            addCriterion("order_price =", value, "orderPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderPriceNotEqualTo(Integer value) {
+            addCriterion("order_price <>", value, "orderPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderPriceGreaterThan(Integer value) {
+            addCriterion("order_price >", value, "orderPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderPriceGreaterThanOrEqualTo(Integer value) {
+            addCriterion("order_price >=", value, "orderPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderPriceLessThan(Integer value) {
+            addCriterion("order_price <", value, "orderPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderPriceLessThanOrEqualTo(Integer value) {
+            addCriterion("order_price <=", value, "orderPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderPriceIn(List<Integer> values) {
+            addCriterion("order_price in", values, "orderPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderPriceNotIn(List<Integer> values) {
+            addCriterion("order_price not in", values, "orderPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderPriceBetween(Integer value1, Integer value2) {
+            addCriterion("order_price between", value1, value2, "orderPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderPriceNotBetween(Integer value1, Integer value2) {
+            addCriterion("order_price not between", value1, value2, "orderPrice");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

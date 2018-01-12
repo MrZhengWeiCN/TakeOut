@@ -2,11 +2,13 @@ package edu.zhwei.pojo;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class Order {
     private Integer orderId;
 
     private String orderUserName;
-
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date orderTime;
 
     private Integer orderAccept;
@@ -14,6 +16,8 @@ public class Order {
     private String orderTel;
 
     private String orderAddr;
+
+    private Integer orderPrice;
 
     public Integer getOrderId() {
         return orderId;
@@ -61,5 +65,13 @@ public class Order {
 
     public void setOrderAddr(String orderAddr) {
         this.orderAddr = orderAddr == null ? null : orderAddr.trim();
+    }
+
+    public Integer getOrderPrice() {
+        return orderPrice;
+    }
+
+    public void setOrderPrice(Integer orderPrice) {
+        this.orderPrice = orderPrice;
     }
 }

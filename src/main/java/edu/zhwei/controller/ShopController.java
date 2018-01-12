@@ -33,10 +33,12 @@ public class ShopController {
 	public String shoppingPage(HttpServletRequest request,Model model){
 		
 		List<ShopDetail> details = shopService.findAllShopDetail(request);
-		Shop shop = new Shop();
-		shop.setList(details);
-		model.addAttribute("details", details);
-		model.addAttribute("totalPrice", shop.getTotalPrice());
+		if(details!=null&&details.size()>0){
+			Shop shop = new Shop();
+			shop.setList(details);
+			model.addAttribute("details", details);
+			model.addAttribute("totalPrice", shop.getTotalPrice());
+		}
 		return "shopping";
 	}
 	
@@ -64,7 +66,7 @@ public class ShopController {
 	}
 	
 	@RequestMapping("/shoppingChange")
-	public void changeShop(Integer menuId,String opt,HttpServletRequest request,HttpServletResponse response){
-		BookResult result = shopService.change(menuId,opt,request,response);
+	public void changeShop(Integer menuId,String opt,HttpServletRequest request,String remark,HttpServletResponse response){
+		BookResult result = shopService.change(menuId,opt,request,remark,response);
 	}
 }

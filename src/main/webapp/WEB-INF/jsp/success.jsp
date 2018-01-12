@@ -6,14 +6,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-  <head>
+
     <head>
         <%-- the header --%>
         <%@ include file="/WEB-INF/jsp/header.jsp" %>
 
         <title>注册成功</title>
     </head>
-  </head>
+ 
   
   <body>
   	<%-- the navbar --%>

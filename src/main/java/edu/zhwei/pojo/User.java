@@ -7,7 +7,6 @@ public class User {
 
     private String userPasswd;
 
-    //1表示顾客，0表示管理员
     private Integer userAuth;
 
     private String userTel;

@@ -22,11 +22,10 @@
                         管理 <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="manUserPageEnter">用户管理</a></li>
-                        <li><a href="manOrderPageEnter">订单管理</a></li>
-                        <li><a href="manPicPageEnter">图片管理</a></li>
-                        <li><a href="manMenuPageEnter">菜单管理</a></li>
-                        <li><a href="manMenuTypePageEnter">菜品类型管理</a></li>
+                        <li><a href="/manUserPageEnter">用户管理</a></li>
+                        <li><a href="/manOrderPageEnter">订单管理</a></li>
+                        <li><a href="/manMenuPageEnter">菜单管理</a></li>
+                        <li><a href="/manMenuTypePageEnter">菜品类型管理</a></li>
                     </ul>
                 </li>
             </c:if>
@@ -37,36 +36,36 @@
                         选项 <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="shoppingPageEnter">购物车</a></li>
-                        <li><a href="orderListPageEnter">订单列表</a></li>
+                        <li><a href="/shoppingPageEnter">购物车</a></li>
+                        <li><a href="/orderListPageEnter/${sessionScope.user.userName }">订单列表</a></li>
                         <li class="divider"></li>
-                        <li><a href="perInfoPageEnter">个人信息</a></li>
+                        <li><a href="/perInfoPageEnter">个人信息</a></li>
                     </ul>
                 </li>
             </c:if>
             <c:choose>
             <c:when test="${sessionScope.user==null}">
                 <li>
-                    <a href="loginPageEnter" id="ib_navbar_login_a" class="navbar-link">
+                    <a href="/loginPageEnter" id="ib_navbar_login_a" class="navbar-link">
                         登陆
                     </a>
                 </li>
             </c:when>
             <c:otherwise>
                 <li>
-                    <a href="logoutProcess" id="ib_navbar_login_a" class="navbar-link">
+                    <a href="/logoutProcess" id="ib_navbar_login_a" class="navbar-link">
                        注销
                     </a>
                 </li>
             </c:otherwise>
             </c:choose>
             <li>
-                <a href="regPageEnter" id="ib_navbar_reg_a" class="navbar-link">
+                <a href="/regPageEnter" id="ib_navbar_reg_a" class="navbar-link">
                    注册
                 </a>
             </li>
             <li>
-                <a href="perInfoPageEnter" id="ib_navbar_reg_a" class="navbar-link">
+                <a href="/perInfoPageEnter" id="ib_navbar_reg_a" class="navbar-link">
                    ${sessionScope.user.userName}
                 </a>
             </li>
