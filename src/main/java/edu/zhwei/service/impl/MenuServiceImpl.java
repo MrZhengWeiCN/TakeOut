@@ -186,4 +186,11 @@ public class MenuServiceImpl implements MenuService {
 		return menus;
 	}
 
+	//查找某一个菜单类型
+	@Override
+	public Menutype findMenuTypeById(Integer typeId) {
+		Menutype menuType = typeMapper.selectByPrimaryKey(typeId);
+		return menuType;
+	}
+
 }

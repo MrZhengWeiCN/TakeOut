@@ -11,7 +11,7 @@
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="/">全部</a></li>
                     <c:forEach items="${sessionScope.types }" var="type">
-                        <li><a href="/?typeId=${type.menuTypeId}">${type.menuTypeName}(${type.menuTypeNum})</a></li>
+                        <li><a href="/${type.menuTypeId}">${type.menuTypeName}(${type.menuTypeNum})</a></li>
                     </c:forEach>
                     </ul>
                 </li>

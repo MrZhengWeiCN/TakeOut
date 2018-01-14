@@ -17,5 +17,7 @@ public interface MenuService {
 	List<Menu> findAllMenu();
 
 	List<Menu> selectTypeMenu(Integer typeId);
+	
+	Menutype findMenuTypeById(Integer typeId);
 
 }

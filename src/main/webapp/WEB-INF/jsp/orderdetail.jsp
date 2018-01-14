@@ -16,6 +16,8 @@
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 	<div id="ib_orderdetail_content_div">
+	
+	<h1 style="text-align:center">订单详情</h1>
 		<table class="table">
 			<tr>
 			    <th>订单号</th>
@@ -35,8 +37,17 @@
 			</c:forEach>
 		</table>
 		<br>
-		<a href="${backURL}">返回</a>
 	</div>
-
+	<div style="text-align:center"> 
+	<a href="javascript:back()" style="text-align:center" onclick="back()">返回</a>
+	</div >
+		
 </body>
+
+<script type="text/javascript">
+
+function back(){
+	window.location.href = document.referrer;
+}
+</script>
 </html>

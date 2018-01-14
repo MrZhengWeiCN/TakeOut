@@ -16,7 +16,7 @@
 		<%-- <s:iterator value="lstMenuTypeBean" id="bean"> --%>
 		<div class="row">
 			<!-- 分类名 -->
-			<h2 class="ib_idx_caption_h">${type.menuTypeNum==null?"全部":"type.menuTypeNum" }</h2>
+			<h2 class="ib_idx_caption_h">${type==null?"全部": type.menuTypeName }</h2>
 			<!-- 开始一个一个菜品 -->
 			<c:forEach var="menu" items="${menus}">
 				<div class="col-md-3">

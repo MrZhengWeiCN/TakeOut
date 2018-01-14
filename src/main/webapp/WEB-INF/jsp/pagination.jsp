@@ -5,7 +5,7 @@
 		<!-- 分页 idx当前页 currPage-->
 		<c:forEach var="idx" begin="${startPage}" end="${endPage}">
 			<c:if test="${idx == currPage}">
-				<li class="active"><a href="#">${idx} <span class="sr-only">(当前页)</span>
+				<li class="active"><a href="javascript:void(0)">${idx} <span class="sr-only">(当前页)</span>
 				</a>
 				</li>
 			</c:if>
@@ -14,7 +14,7 @@
 				</li>
 			</c:if>
 		</c:forEach>
-		<li><a href="${destPage}?page=${maxPage}">&raquo;</a>
+		<li><a href="${destPage}?page=${endPage}">&raquo;</a>
 		</li>
 	</ul>
 </nav>

@@ -11,9 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import edu.zhwei.common.BookResult;
 import edu.zhwei.common.JsonUtils;
+import edu.zhwei.common.PageOpt;
 import edu.zhwei.pojo.Order;
 import edu.zhwei.pojo.Orderdetail;
 import edu.zhwei.service.OrderService;
@@ -45,8 +47,15 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping("/orderListPageEnter/{orderUserName}")
-	public String orderList(Model model,@PathVariable String orderUserName) {
+	public String orderList(Model model, @PathVariable String orderUserName,
+			@RequestParam(value = "page", defaultValue = "1") Integer page) {
 		List<Order> orders = orderService.findAll(orderUserName);
+		int endPage = PageOpt.pageRecord(orders, PageOpt.SHOP);
+		orders = PageOpt.pageList(orders, page, PageOpt.ORDER_LIST);
+		
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("startPage", 1);
+		model.addAttribute("currPage", page);
 		model.addAttribute("orders", orders);
 		return "orderlist";
 	}
@@ -58,10 +67,15 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping("/orderDetailPageEnter")
-	public String detail(Integer orderId,Model model,HttpServletRequest request ) {
+	public String detail(Integer orderId, Model model,
+			HttpServletRequest request) {
 		List<Orderdetail> details = orderService.findDetailByOrderId(orderId);
 		model.addAttribute("backURL", request.getRequestURL());
 		model.addAttribute("details", details);
+		
+		model.addAttribute("endPage", 1);
+		model.addAttribute("startPage", 1);
+		model.addAttribute("currPage", 1);
 		return "orderdetail";
 	}
 
@@ -84,5 +98,5 @@ public class OrderController {
 		model.addAttribute("order", jsonToPojo);
 		return "order_success";
 	}
-	
+
 }

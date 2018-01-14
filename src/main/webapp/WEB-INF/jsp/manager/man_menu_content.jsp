@@ -1,6 +1,7 @@
 <%-- include the jstl --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<h1 style="text-align:center">菜单管理</h1>
 <table class="table">
 	<tr>
 		<th>菜名</th>
