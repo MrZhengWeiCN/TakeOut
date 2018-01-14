@@ -33,5 +33,16 @@
 	<mvc:resources location="/WEB-INF/js/" mapping="/js/**"/>
 	<mvc:resources location="/WEB-INF/css/" mapping="/css/**"/>
 	<!-- <mvc:resources location="/WEB-INF/image/" mapping="/image/**"/> -->
+	
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/shoppingSubmit"/>
+			<mvc:mapping path="/orderListPageEnter/*"/>
+			<mvc:mapping path="/orderDetailPageEnter/*"/>
+			<mvc:mapping path="/shoppingPageEnter"/>
+			
+			<bean class="edu.zhwei.interceptor.LoginInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
 
 </beans>

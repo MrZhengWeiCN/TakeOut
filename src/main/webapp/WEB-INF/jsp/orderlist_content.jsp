@@ -7,7 +7,8 @@
 <table class="table">
 	<tr>
 		<th>订单号</th>
-		<th>下单时间
+		<th>下单时间</th>
+		<th>收获地址</th>
 		<th>价格</th>
 		<th>状态</th>
 		<th>操作</th>
@@ -15,10 +16,11 @@
 	
 	<c:forEach items="${orders }" var="order" >
 		<tr>
-			<td><a href='/orderDetailPageEnter?orderId=${order.orderId }'>
+			<td><a href='/orderDetailPageEnter/${order.orderId }'>
 					${order.orderId } </a>
 			</td>
 			<td><fmt:formatDate value="${order.orderTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+			<td>${order.orderAddr }</td>
 			<td>￥${order.orderPrice/10 }元</td>
 			<c:choose>
 				<c:when test=" ${order.orderAccept==1}">

@@ -3,9 +3,14 @@ package edu.zhwei.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.mysql.jdbc.StringUtils;
+
 import edu.zhwei.common.BookResult;
+import edu.zhwei.common.JsonUtils;
+import edu.zhwei.component.JedisClient;
 import edu.zhwei.mapper.MenuMapper;
 import edu.zhwei.mapper.MenutypeMapper;
 import edu.zhwei.pojo.Menu;
@@ -21,20 +26,30 @@ public class MenuServiceImpl implements MenuService {
 	private static final String ADD = "menuTypeAdd";
 	private static final String MOD = "menuTypeMod";
 	private static final String DEL = "menuTypeDel";
-	
-	
+
 	private static final String MENUADD = "menuAdd";
 	private static final String MENUDEL = "menuDel";
 	private static final String MENUMOD = "menuMod";
-	
+
 	@Autowired
 	private MenutypeMapper typeMapper;
 	@Autowired
 	private MenuMapper menuMapper;
+	@Autowired
+	private JedisClient jedisClient;
 
-	//菜单类型的操作
+	@Value("${menu}")
+	private String menukey;
+	@Value("${menuType}")
+	private String menuTypekey;
+	@Value("${menuTypemenu}")
+	private String menuTypemenukey;
+
+	// 菜单类型的操作
 	@Override
 	public BookResult doOpt(String opt, String menuTypeName, Integer id) {
+		// redis内容清空;
+		jedisClient.del(menuTypekey);
 		if (opt.equals(ADD)) {
 			return add(menuTypeName);
 		}
@@ -42,6 +57,8 @@ public class MenuServiceImpl implements MenuService {
 			return mod(id, menuTypeName);
 		}
 		if (opt.equals(DEL)) {
+			jedisClient.del(menukey);
+			jedisClient.del(menuTypemenukey+":"+id);
 			return del(id);
 		}
 		return null;
@@ -56,11 +73,22 @@ public class MenuServiceImpl implements MenuService {
 		}
 	}
 
+	// 找出所有的菜单类型
 	@Override
 	public List<Menutype> findAll() {
-		MenutypeExample example = new MenutypeExample();
-		List<Menutype> types = typeMapper.selectByExample(example);
-		return types;
+		List<Menutype> types;
+		String string = jedisClient.get(menuTypekey);
+		if (string != null) {
+			types = JsonUtils.jsonToList(string, Menutype.class);
+			return types;
+		} else {
+			MenutypeExample example = new MenutypeExample();
+			types = typeMapper.selectByExample(example);
+			String json = JsonUtils.objectToJson(types);
+			jedisClient.set(menuTypekey, json);
+			jedisClient.expire(menuTypekey, 24 * 60 * 60);
+			return types;
+		}
 	}
 
 	public BookResult mod(Integer id, String menuTypeName) {
@@ -101,38 +129,44 @@ public class MenuServiceImpl implements MenuService {
 		}
 	}
 
-	//关于菜单的操作
+	// 关于菜单的操作
 	@Override
-	public BookResult menuChange(String opt, Menu menu,Integer id) {
-		if(opt.equals(MENUADD)){
+	public BookResult menuChange(String opt, Menu menu, Integer id) {
+		//刪除所有和菜單有關的緩存
+		jedisClient.del(menukey);
+		
+		jedisClient.del(menuTypekey);
+		if (opt.equals(MENUADD)) {
 			return menuAdd(menu);
 		}
-		if(opt.equals(MENUDEL)){
+		if (opt.equals(MENUDEL)) {
 			return menuDel(id);
 		}
-		if(opt.equals(MENUMOD)){
-			return menuMod(menu,id);
+		if (opt.equals(MENUMOD)) {
+			return menuMod(menu, id);
 		}
 		return null;
 	}
 
 	private BookResult menuMod(Menu menu, Integer id) {
-		//先检验菜名是否存在
+		// 先检验菜名是否存在
 		menu.setMenuId(id);
-		//菜名是否改变
+		// 菜名是否改变
 		Menu oldMenu = menuMapper.selectByPrimaryKey(id);
-		if(!oldMenu.getMenuName().endsWith(menu.getMenuName())){
+		if (!oldMenu.getMenuName().endsWith(menu.getMenuName())) {
 			MenuExample example = new MenuExample();
-			edu.zhwei.pojo.MenuExample.Criteria criteria = example.createCriteria();
+			edu.zhwei.pojo.MenuExample.Criteria criteria = example
+					.createCriteria();
 			criteria.andMenuNameEqualTo(menu.getMenuName());
-			List<Menu> menus = menuMapper.selectByExample(example );
-			if(menus!=null&&menus.size()>0){
+			List<Menu> menus = menuMapper.selectByExample(example);
+			if (menus != null && menus.size() > 0) {
 				return BookResult.build(400, "菜品已经存在！");
 			}
 		}
-		//更新
+		// 更新
 		try {
 			menuMapper.updateByPrimaryKey(menu);
+			jedisClient.del(menuTypemenukey+":"+oldMenu.getMenuTypeId());
 			return BookResult.ok();
 		} catch (Exception e) {
 			return BookResult.build(400, "未知错误发生！");
@@ -141,6 +175,8 @@ public class MenuServiceImpl implements MenuService {
 
 	private BookResult menuDel(Integer id) {
 		try {
+			Menu menu = menuMapper.selectByPrimaryKey(id);
+			jedisClient.del(menuTypemenukey+":"+menu.getMenuTypeId());
 			menuMapper.deleteByPrimaryKey(id);
 			return BookResult.ok();
 		} catch (Exception e) {
@@ -149,18 +185,20 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	private BookResult menuAdd(Menu menu) {
-		//先校验是否已经有相同的菜名了
+		// 先校验是否已经有相同的菜名了
 		MenuExample example = new MenuExample();
 		edu.zhwei.pojo.MenuExample.Criteria criteria = example.createCriteria();
 		criteria.andMenuNameEqualTo(menu.getMenuName());
 		List<Menu> menus = menuMapper.selectByExample(example);
-		if(menus!=null&&menus.size()>0)
+		if (menus != null && menus.size() > 0)
 			return BookResult.build(400, "菜品已存在，无需重复添加！");
 		try {
 			menuMapper.insert(menu);
-			//类型数量加一
+			//清空redis的内容
+			jedisClient.del(menuTypemenukey+":"+menu.getMenuTypeId());
+			// 类型数量加一
 			Menutype type = typeMapper.selectByPrimaryKey(menu.getMenuTypeId());
-			type.setMenuTypeNum(type.getMenuTypeNum()+1);
+			type.setMenuTypeNum(type.getMenuTypeNum() + 1);
 			typeMapper.updateByPrimaryKey(type);
 			return BookResult.ok();
 		} catch (Exception e) {
@@ -170,23 +208,41 @@ public class MenuServiceImpl implements MenuService {
 
 	@Override
 	public List<Menu> findAllMenu() {
-		MenuExample example = new MenuExample();
-		edu.zhwei.pojo.MenuExample.Criteria criteria = example.createCriteria();
-		List<Menu> types = menuMapper.selectByExample(example );
-		return types;
+		List<Menu> types;
+		String string = jedisClient.get(menukey);
+		if(string!=null){
+			types = JsonUtils.jsonToList(string, Menu.class);
+			return types;
+		}else {
+			MenuExample example = new MenuExample();
+			types = menuMapper.selectByExample(example);
+			String json = JsonUtils.objectToJson(types);
+			jedisClient.set(menukey, json);
+			jedisClient.expire(menuTypekey, 24 * 60 * 60);
+			return types;
+		}
 	}
 
-	//找到某一个类型的菜单
+	// 找到某一个类型的菜单
 	@Override
 	public List<Menu> selectTypeMenu(Integer typeId) {
-		MenuExample example = new MenuExample();
-		edu.zhwei.pojo.MenuExample.Criteria criteria = example.createCriteria();
-		criteria.andMenuTypeIdEqualTo(typeId);
-		List<Menu> menus = menuMapper.selectByExample(example );
-		return menus;
+		List<Menu> menus;
+		String string = jedisClient.get(menuTypemenukey+":"+typeId);
+		if(string!=null){
+			menus = JsonUtils.jsonToList(string, Menu.class);
+			return menus;
+		}else {
+			MenuExample example = new MenuExample();
+			edu.zhwei.pojo.MenuExample.Criteria criteria = example.createCriteria();
+			criteria.andMenuTypeIdEqualTo(typeId);
+			menus = menuMapper.selectByExample(example);
+			jedisClient.set(menuTypemenukey+":"+typeId, JsonUtils.objectToJson(menus));
+			jedisClient.expire(menuTypemenukey+":"+typeId, 24*60*60);
+			return menus;
+		}
 	}
 
-	//查找某一个菜单类型
+	// 查找某一个菜单类型
 	@Override
 	public Menutype findMenuTypeById(Integer typeId) {
 		Menutype menuType = typeMapper.selectByPrimaryKey(typeId);

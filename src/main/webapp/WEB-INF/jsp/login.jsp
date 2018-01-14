@@ -23,6 +23,7 @@
                   <input type="text" id="ib_login_user_input" name="userName" class="form-control input-lg" placeholder="用户名" />
                     <br>
                     <input type="password" id="ib_login_passwd_input" name="userPasswd" class="form-control input-lg" placeholder="密码" />
+                    <input type="hidden" name="redirectURL" value="${redirectURL }">
                     <div class="ib_login_error_div">
                         <span><strong>${logError }</strong></span>
                     </div>

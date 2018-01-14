@@ -18,6 +18,7 @@ import edu.zhwei.common.JsonUtils;
 import edu.zhwei.common.PageOpt;
 import edu.zhwei.pojo.Order;
 import edu.zhwei.pojo.Orderdetail;
+import edu.zhwei.pojo.User;
 import edu.zhwei.service.OrderService;
 
 /**
@@ -66,8 +67,8 @@ public class OrderController {
 	 * @param orderId
 	 * @return
 	 */
-	@RequestMapping("/orderDetailPageEnter")
-	public String detail(Integer orderId, Model model,
+	@RequestMapping("/orderDetailPageEnter/{orderId}")
+	public String detail(@PathVariable Integer orderId, Model model,
 			HttpServletRequest request) {
 		List<Orderdetail> details = orderService.findDetailByOrderId(orderId);
 		model.addAttribute("backURL", request.getRequestURL());
@@ -87,6 +88,8 @@ public class OrderController {
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 		System.out.println("开始！");
+		User user = (User) request.getSession().getAttribute("user");
+		order.setOrderUserName(user.getUserName());
 		BookResult result = orderService.orderCreate(order, request, response);
 		if (result.getStatus() != 200) {
 			// 发送错误了

@@ -17,19 +17,23 @@ public class LoginController {
 	private LogRegService logRegService;
 
 	@RequestMapping("/loginPageEnter")
-	public String loginPage() {
+	public String loginPage(String redirectURL,Model model) {
+		model.addAttribute("redirectURL", redirectURL);
 		return "login";
 	}
 
 	@RequestMapping("/loginProcess")
 	public String loginProcess(String userName, String userPasswd, Model model,
-			HttpServletRequest request) {
+			HttpServletRequest request,String redirectURL) {
 		BookResult result = logRegService.loginProcess(userName, userPasswd,
 				request);
 		if (result.getStatus() == 400) {
 			model.addAttribute("logError", result.getMsg());
 			return "login";
 		} else {
+			if(redirectURL!=null){
+				return "redirect:"+redirectURL;
+			}
 			return "redirect:/";
 		}
 	}

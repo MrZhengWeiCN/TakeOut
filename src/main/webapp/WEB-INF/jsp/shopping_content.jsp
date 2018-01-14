@@ -56,6 +56,16 @@
 </div>
 </br>
 <div class="input-group">
+    <span id="ib_shop_addr_span" class="input-group-addon">收货人姓名</span>
+    <input type="text"  name="orderUserName"
+        address="strAddress" 
+        id="ib_shop_addr_input"
+        class="form-control" 
+        <%-- onblur='onInputAddrChange("opt=addrChange&page=${currPage}");' --%>
+        value="${sessionScope.user.userName }" readOnly="true"/>
+</div>
+</br>
+<div class="input-group">
     <span id="ib_shop_addr_span" class="input-group-addon">收货地址</span>
     <input type="text" name="orderAddr"
         address="strAddress" 
@@ -64,16 +74,7 @@
         <%-- onblur='onInputAddrChange("opt=addrChange&page=${currPage}");' --%>
         value="${sessionScope.user.userAddr }" />
 </div>
-</br>
-<div class="input-group">
-    <span id="ib_shop_addr_span" class="input-group-addon">收货人姓名</span>
-    <input type="text"  name="orderUserName"
-        address="strAddress" 
-        id="ib_shop_addr_input"
-        class="form-control" 
-        <%-- onblur='onInputAddrChange("opt=addrChange&page=${currPage}");' --%>
-        value="${sessionScope.user.userName }" />
-</div>
+
 </br>
 <div class="input-group">
     <span id="ib_shop_addr_span" class="input-group-addon">联系电话</span>
