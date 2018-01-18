@@ -13,7 +13,6 @@
 
 	<div id="ib_idx_content_div">
 		<!-- 展示一下菜单 -->
-		<%-- <s:iterator value="lstMenuTypeBean" id="bean"> --%>
 		<div class="row">
 			<!-- 分类名 -->
 			<h2 class="ib_idx_caption_h">${type==null?"全部": type.menuTypeName }</h2>
@@ -21,7 +20,7 @@
 			<c:forEach var="menu" items="${menus}">
 				<div class="col-md-3">
 					<div class="thumbnail">
-						<img src="${menu.menuPicAddr }">
+						<img src="${menu.menuPicAddr }" >
 						<h4 class="ib_idx_caption_h">${menu.menuName }</h4>
 						<h5 class="ib_idx_caption_h">价格:￥${menu.menuPrice/10 }元</h5>
 						<p class="ib_idx_caption_h">

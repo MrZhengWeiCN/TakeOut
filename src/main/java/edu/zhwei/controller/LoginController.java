@@ -1,6 +1,7 @@
 package edu.zhwei.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,32 +18,35 @@ public class LoginController {
 	private LogRegService logRegService;
 
 	@RequestMapping("/loginPageEnter")
-	public String loginPage(String redirectURL,Model model) {
+	public String loginPage(String redirectURL, Model model, Integer userAuth) {
+		if (userAuth!=null&& userAuth== 0) {
+			model.addAttribute("auth", "管理员");
+		}
 		model.addAttribute("redirectURL", redirectURL);
 		return "login";
 	}
 
 	@RequestMapping("/loginProcess")
 	public String loginProcess(String userName, String userPasswd, Model model,
-			HttpServletRequest request,String redirectURL) {
+			HttpServletRequest request, HttpServletResponse response,String redirectURL) {
 		BookResult result = logRegService.loginProcess(userName, userPasswd,
-				request);
+				request,response);
 		if (result.getStatus() == 400) {
 			model.addAttribute("logError", result.getMsg());
 			return "login";
 		} else {
-			if(redirectURL!=null){
-				return "redirect:"+redirectURL;
+			if (redirectURL != null) {
+				return "redirect:" + redirectURL;
 			}
 			return "redirect:/";
 		}
 	}
 
 	@RequestMapping("/logoutProcess")
-	public String logoutProcess(Model model, HttpServletRequest request) {
-		BookResult result = logRegService.logoutProcess(request);
-		if(result.getStatus()==200){
-			model.addAttribute("sucInfo","已安全退出，期待您的下一次光临" );
+	public String logoutProcess(Model model, HttpServletRequest request,HttpServletResponse response) {
+		BookResult result = logRegService.logoutProcess(request,response);
+		if (result.getStatus() == 200) {
+			model.addAttribute("sucInfo", "已安全退出，期待您的下一次光临");
 			model.addAttribute("click", "返回首页");
 			model.addAttribute("clickURL", "/");
 			return "success";

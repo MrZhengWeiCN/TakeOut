@@ -32,7 +32,7 @@
 	<!-- 配置资源映射 -->
 	<mvc:resources location="/WEB-INF/js/" mapping="/js/**"/>
 	<mvc:resources location="/WEB-INF/css/" mapping="/css/**"/>
-	<!-- <mvc:resources location="/WEB-INF/image/" mapping="/image/**"/> -->
+	<mvc:resources location="/WEB-INF/image/" mapping="/image/**"/>
 	
 	<mvc:interceptors>
 		<mvc:interceptor>
@@ -40,8 +40,12 @@
 			<mvc:mapping path="/orderListPageEnter/*"/>
 			<mvc:mapping path="/orderDetailPageEnter/*"/>
 			<mvc:mapping path="/shoppingPageEnter"/>
-			
+			<!-- <mvc:mapping path="/getCoupon"/> -->
 			<bean class="edu.zhwei.interceptor.LoginInterceptor"/>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/man*"/>
+			<bean class="edu.zhwei.interceptor.AdminInterceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>
 

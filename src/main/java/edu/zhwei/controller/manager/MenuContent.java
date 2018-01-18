@@ -1,6 +1,5 @@
 package edu.zhwei.controller.manager;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
-
-import edu.zhwei.common.BookResult;
 import edu.zhwei.common.PageOpt;
 import edu.zhwei.pojo.Menu;
 import edu.zhwei.service.MenuService;

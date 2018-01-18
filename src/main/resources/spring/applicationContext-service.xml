@@ -22,6 +22,6 @@
 		<constructor-arg name="host" value="127.0.0.1"></constructor-arg>
 		<constructor-arg name="port" value="6379"></constructor-arg>
 	</bean>
-	<!-- 配置redis客户端实现类 -->
+	<!--配置redis客户端实现类  -->
 	<bean id="jedisClientSingle" class="edu.zhwei.component.impl.JedisClientSingle"/>
 </beans>

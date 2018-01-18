@@ -17,7 +17,7 @@
             <form method="post" id="ib_login_form" action="loginProcess" role="form">
                 <div class="form-group">
                     <label id="ib_login_label" for="ib_login_user_input">
-                        请登录
+                        请${auth}登录
                     </label>
                     <br>
                   <input type="text" id="ib_login_user_input" name="userName" class="form-control input-lg" placeholder="用户名" />

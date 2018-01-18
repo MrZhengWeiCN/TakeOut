@@ -1,5 +1,6 @@
 package edu.zhwei.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,9 @@ import edu.zhwei.common.BookResult;
 import edu.zhwei.common.PageOpt;
 import edu.zhwei.pojo.Shop;
 import edu.zhwei.pojo.ShopDetail;
+import edu.zhwei.pojo.User;
+import edu.zhwei.pojo.UserCoupon;
+import edu.zhwei.service.CouponService;
 import edu.zhwei.service.ShopService;
 
 /**
@@ -37,6 +41,8 @@ public class ShopController {
 
 	@Autowired
 	private ShopService shopService;
+	@Autowired
+	private CouponService couponService;
 
 	@RequestMapping("/shoppingPageEnter")
 	public String shoppingPage(HttpServletRequest request, Model model,
@@ -44,6 +50,10 @@ public class ShopController {
 
 		List<ShopDetail> details = shopService.findAllShopDetail(request);
 		int endPage = PageOpt.pageRecord(details, PageOpt.SHOP);
+		User user = (User) request.getSession().getAttribute("user");
+		//找到可用的优惠券
+		List<UserCoupon> myCoupon = couponService.myCoupon(user.getUserId(), 1);
+		List<UserCoupon> coupons = new ArrayList<>();
 		if (details != null && details.size() > 0) {
 			Shop shop = new Shop();
 			details = PageOpt.pageList(details, page, PageOpt.SHOP);
@@ -54,6 +64,12 @@ public class ShopController {
 			model.addAttribute("currPage", page);
 			model.addAttribute("details", details);
 			model.addAttribute("totalPrice", shop.getTotalPrice());
+			int totalPrice = shop.getTotalPrice();
+			for (UserCoupon userCoupon : myCoupon) {
+				if(totalPrice>=userCoupon.getCouponThreshold())
+					coupons.add(userCoupon);
+			}
+			model.addAttribute("coupons", coupons);
 		}
 		return "shopping";
 	}

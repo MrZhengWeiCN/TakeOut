@@ -65,20 +65,7 @@
 			}
 		}
 		
-		/* function onInputRemarkChange(data) {
-			var ajaxUrl = "shoppingChange";
-			data = data + "&remark="+ $(this).val();
-			jQuery
-					.ajax({
-						type : "POST",
-						url : ajaxUrl,
-						data : data,
-						dataType : "html",
-						contentType : "application/x-www-form-urlencoded; charset=utf-8",
-						success : fnChangeFinish
-					});
-		}
- */
+		
 		function onInputAddrChange(data) {
 			var ajaxUrl = "shoppingChange";
 

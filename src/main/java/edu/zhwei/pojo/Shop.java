@@ -14,9 +14,10 @@ public class Shop {
 		this.list = list;
 	}
 	public int getTotalPrice() {
+		int localTotoal = 0;
 		for (ShopDetail detail : list) {
-			totalPrice += detail.getTotalPrice();
+			localTotoal += detail.getTotalPrice();
 		}
-		return totalPrice;
+		return localTotoal;
 	}
 }

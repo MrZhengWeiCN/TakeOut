@@ -44,12 +44,12 @@
 		} */
 
 		function fnChangeFinish() {
-			setTimeout(function() {
-				window.location.reload();//页面刷新
-			}, 1000)
+			/* setTimeout(function() { */
+			window.location.reload();//页面刷新
+			/* }, 10) */
 		}
 
-		function onBtnAddClick(data) {
+		/* function onBtnAddClick(data) {
 			var ajaxUrl = "manMenuTypeChange";
 
 			data = data + "&menuTypeName="
@@ -64,8 +64,32 @@
 						contentType : "application/x-www-form-urlencoded; charset=utf-8",
 						success : fnChangeFinish()
 					});
+		} */
+
+		function onBtnAddClick(data) {
+			var ajaxUrl = "manMenuTypeChange";
+
+			data = data + "&menuTypeName="
+					+ $("#ib_man_menu_type_new_name_input").val();
+
+			jQuery
+					.ajax({
+						type : "POST",
+						url : ajaxUrl,
+						data : data,
+						dataType : "json",
+						contentType : "application/x-www-form-urlencoded; charset=utf-8",
+						success : function(data) {
+							if (data.status == 200) {
+								alert("操作成功！");
+							} else {
+								alert(data.msg);
+							}
+							fnChangeFinish();
+						}
+					});
 		}
-		
+
 		function onBtnEditClick(data) {
 			$(".ib_man_menu_type_id_label").each(
 					function() {
@@ -128,7 +152,14 @@
 						data : data,
 						dataType : "html",
 						contentType : "application/x-www-form-urlencoded; charset=utf-8",
-						success : fnChangeFinish()
+						success : function(data) {
+							if (data.status == 200) {
+								alert("操作成功！");
+							} else {
+								alert(data.msg);
+							}
+							fnChangeFinish();
+						}
 					});
 		}
 	</script>
