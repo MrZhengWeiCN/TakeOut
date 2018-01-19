@@ -27,6 +27,7 @@ import edu.zhwei.pojo.OrderExample.Criteria;
 import edu.zhwei.pojo.Orderdetail;
 import edu.zhwei.pojo.OrderdetailExample;
 import edu.zhwei.pojo.ShopDetail;
+import edu.zhwei.service.CouponService;
 import edu.zhwei.service.OrderService;
 
 @Service
@@ -36,10 +37,12 @@ public class OrderServiceImpl implements OrderService {
 	private OrderMapper orderMapper;
 	@Autowired
 	private OrderdetailMapper detailMapper;
+	@Autowired
+	private CouponService couponService;
 	
 	@Override
 	public BookResult orderCreate(Order order, HttpServletRequest request,
-			HttpServletResponse response) throws IOException {
+			HttpServletResponse response,Integer userId, Integer couponId) throws IOException {
 		//开购物车中是否有东西
 		String cookieValue = CookieUtils.getCookieValue(request, "SHOP");
 		if (cookieValue==null) {
@@ -70,6 +73,11 @@ public class OrderServiceImpl implements OrderService {
 			} catch (Exception e) {
 				return BookResult.build(400, "未知错误发生！");
 			}
+		}
+		//删除优惠券
+		BookResult copResult = couponService.deleteUserCop(userId,couponId);
+		if(copResult.getStatus()==400){
+			return copResult;
 		}
 		//清空cookie中的购物车
 		String orderJson = JsonUtils.objectToJson(order);

@@ -19,6 +19,7 @@ import edu.zhwei.common.PageOpt;
 import edu.zhwei.pojo.Order;
 import edu.zhwei.pojo.Orderdetail;
 import edu.zhwei.pojo.User;
+import edu.zhwei.service.CouponService;
 import edu.zhwei.service.OrderService;
 
 /**
@@ -41,6 +42,8 @@ public class OrderController {
 
 	@Autowired
 	private OrderService orderService;
+	@Autowired
+	private CouponService couponService;
 
 	/**
 	 * 订单列表
@@ -84,13 +87,14 @@ public class OrderController {
 	 * 订单创建
 	 */
 	@RequestMapping("/shoppingSubmit")
-	public String orderCreate(Order order, Model model,
+	public String orderCreate(Order order, Model model,Integer couponId,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 		System.out.println("开始！");
 		User user = (User) request.getSession().getAttribute("user");
 		order.setOrderUserName(user.getUserName());
-		BookResult result = orderService.orderCreate(order, request, response);
+		//如果使用了优惠券则删除优惠券
+		BookResult result = orderService.orderCreate(order, request, response,user.getUserId(),couponId);
 		if (result.getStatus() != 200) {
 			// 发送错误了
 			model.addAttribute("errorInfo", result.getMsg());

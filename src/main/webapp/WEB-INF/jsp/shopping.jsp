@@ -6,6 +6,20 @@
 <%@ include file="/WEB-INF/jsp/header.jsp"%>
 
 <title>购物车</title>
+
+<script type="text/javascript">
+         window.onload = function () {
+             document.getElementById('discount').addEventListener('change',function(){
+              var totalprice = document.getElementById('oldPrice').value;
+ 			  var index = this.selectedIndex;
+ 			  var store_num = this.options[index].getAttribute("discount"); 
+              var left = totalprice - store_num;
+              document.getElementById('hidePrice').value = left;
+              document.getElementById('ib_shop_price_input').value = "￥"+left/10+"元";
+             },false);
+         }
+     </script>
+
 </head>
 <body>
 	<%-- the navbar --%>

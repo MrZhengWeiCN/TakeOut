@@ -52,4 +52,50 @@ public class CouponImpl implements CouponService {
 		return coups;
 	}
 
+	@Override
+	public BookResult deleteUserCop(Integer userId, Integer couponId) {
+		//删除优惠券
+		if(couponId!=null&&couponId!=0){
+			Map<String, String> param = new HashMap<>();
+			param.put("userId", userId.toString());
+			param.put("couponId", couponId.toString());
+			String resultJson = HttpClientUtil.doGet("http://localhost:8081/deleteUserCop",param);
+			BookResult result = JsonUtils.jsonToPojo(resultJson, BookResult.class);
+			return result;
+		}
+		return BookResult.ok();
+	}
+
+	@Override
+	public List<Coupon> findAllForMan() {
+		String couponListJson = HttpClientUtil.doGet("http://localhost:8081/copforman");
+		List<Coupon> coupons = JsonUtils.jsonToList(couponListJson, Coupon.class);
+		return coupons;
+	}
+
+	@Override
+	public BookResult addCoupon(Coupon coupon) {
+		String couponJson = JsonUtils.objectToJson(coupon);
+		String resultJson = HttpClientUtil.doPostJson("http://localhost:8081/addProcess", couponJson);
+		BookResult result = JsonUtils.jsonToPojo(resultJson, BookResult.class);
+		return result;
+	}
+
+	@Override
+	public BookResult manDeleteCoupon(Integer couponId) {
+		String resultJson = HttpClientUtil.doPost("http://localhost:8081/manDeleteCoupon/"+couponId);
+		BookResult result = JsonUtils.jsonToPojo(resultJson, BookResult.class);
+		return result;
+	}
+
+	@Override
+	public BookResult userDeleteCoupon(Integer couponId, Integer userId) {
+		Map<String, String> param = new HashMap<>();
+		param.put("couponId", couponId.toString());
+		param.put("userId", userId.toString());
+		String resultJson = HttpClientUtil.doPost("http://localhost:8081/userDeleteCoupon",param);
+		BookResult result = JsonUtils.jsonToPojo(resultJson, BookResult.class);
+		return result;
+	}
+
 }

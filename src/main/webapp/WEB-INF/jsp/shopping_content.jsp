@@ -42,11 +42,12 @@
 		<span id="ib_shop_price_span" class="input-group-addon">总价</span> <input
 			type="text" address='totalPrice' id="ib_shop_price_input"
 			class="form-control" value="￥${totalPrice/10 }元" readOnly="true" />
-		<input type="hidden" name="orderPrice" value="${totalPrice}">
-		<span >优惠券：<select>
+		<input id="hidePrice" type="hidden" name="orderPrice" value="${totalPrice}">
+		<input id="oldPrice" type="hidden"  value="${totalPrice}">
+		<span >优惠券：<select id="discount" name="couponId">
 		<option value="0">未使用优惠券</option>
 		<c:forEach var="coupon" items="${coupons }">
-					<option value="${coupon.couponDiscount }">${coupon.couponName}</option></c:forEach>
+					<option discount="${coupon.couponDiscount }" value="${coupon.couponId }">${coupon.couponName}</option></c:forEach>
 				</select>
 		</span>
 	</div>

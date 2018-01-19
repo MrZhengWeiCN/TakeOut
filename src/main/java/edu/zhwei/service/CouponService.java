@@ -15,4 +15,14 @@ public interface CouponService {
 	BookResult getCoupon(Integer couponId,HttpServletRequest request);
 
 	List<UserCoupon> myCoupon(Integer userId,Integer condition);
+
+	BookResult deleteUserCop(Integer userId, Integer couponId);
+	
+	List<Coupon> findAllForMan();
+
+	BookResult addCoupon(Coupon coupon);
+
+	BookResult manDeleteCoupon(Integer couponId);
+
+	BookResult userDeleteCoupon(Integer couponId, Integer userId);
 }

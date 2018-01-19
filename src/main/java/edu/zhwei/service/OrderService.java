@@ -13,7 +13,7 @@ import edu.zhwei.pojo.Orderdetail;
 public interface OrderService {
 
 	BookResult orderCreate(Order order, HttpServletRequest request,
-			HttpServletResponse response) throws IOException;
+			HttpServletResponse response, Integer userId, Integer couponId) throws IOException;
 
 	List<Order> findAll(String orderUserName);
 
