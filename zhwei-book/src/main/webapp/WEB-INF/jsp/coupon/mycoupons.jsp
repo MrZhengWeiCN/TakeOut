@@ -11,6 +11,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
+<link rel="shortcut icon" href="/image/coupon.png">
 <base href="<%=basePath%>">
 <%@ include file="/WEB-INF/jsp/header.jsp"%>
 <title>优惠券列表</title>

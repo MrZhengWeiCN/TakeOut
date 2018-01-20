@@ -31,7 +31,7 @@
 			<td><input type="text" menuName='${detail.menuName }'
 				remark='${detail.remark }'
 				onblur='onInputRemarkChange("menuId=${detail.menuId }&opt=remarkChange&page=${currPage}");'
-				class=" form-control ib_shop_remark_input" value="${detail.remark }" />
+				class=" form-control ib_shop_remark_input" value="${detail.remark }" /><img src="/image/remark.png" height="22" width="22"/>
 			</td>
 		</tr>
 	</c:forEach>
@@ -39,12 +39,12 @@
 </br>
 <form action="/shoppingSubmit" method="post">
 	<div class="input-group">
-		<span id="ib_shop_price_span" class="input-group-addon">总价</span> <input
+		<span id="ib_shop_price_span" class="input-group-addon"><img src="/image/price.png" height="24" width="24"/></span> <input
 			type="text" address='totalPrice' id="ib_shop_price_input"
 			class="form-control" value="￥${totalPrice/10 }元" readOnly="true" />
 		<input id="hidePrice" type="hidden" name="orderPrice" value="${totalPrice}">
 		<input id="oldPrice" type="hidden"  value="${totalPrice}">
-		<span >优惠券：<select id="discount" name="couponId">
+		<span >&nbsp;&nbsp;&nbsp;<img src="/image/coupon1.png" height="35" width="35"/>&nbsp;&nbsp;&nbsp;<select id="discount" name="couponId">
 		<option value="0">未使用优惠券</option>
 		<c:forEach var="coupon" items="${coupons }">
 					<option discount="${coupon.couponDiscount }" value="${coupon.couponId }">${coupon.couponName}</option></c:forEach>
@@ -53,7 +53,7 @@
 	</div>
 	</br>
 	<div class="input-group">
-		<span id="ib_shop_addr_span" class="input-group-addon">收货人姓名</span> <input
+		<span id="ib_shop_addr_span" class="input-group-addon"><img src="/image/user.png" height="22" width="22"/></span> <input
 			type="text" name="orderUserName" address="strAddress"
 			id="ib_shop_addr_input" class="form-control"
 			<%-- onblur='onInputAddrChange("opt=addrChange&page=${currPage}");' --%>
@@ -62,7 +62,7 @@
 	</div>
 	</br>
 	<div class="input-group">
-		<span id="ib_shop_addr_span" class="input-group-addon">收货地址</span> <input
+		<span id="ib_shop_addr_span" class="input-group-addon"><img src="/image/local.png" height="22" width="22"/></span> <input
 			type="text" name="orderAddr" address="strAddress"
 			id="ib_shop_addr_input" class="form-control"
 			<%-- onblur='onInputAddrChange("opt=addrChange&page=${currPage}");' --%>
@@ -71,7 +71,7 @@
 
 	</br>
 	<div class="input-group">
-		<span id="ib_shop_addr_span" class="input-group-addon">联系电话</span> <input
+		<span id="ib_shop_addr_span" class="input-group-addon"><img src="/image/tel.png" height="22" width="22"/></span> <input
 			type="text" name="orderTel" address="strAddress"
 			id="ib_shop_addr_input" class="form-control"
 			<%-- onblur='onInputAddrChange("opt=addrChange&page=${currPage}");' --%>

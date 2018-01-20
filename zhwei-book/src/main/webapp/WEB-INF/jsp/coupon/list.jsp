@@ -11,6 +11,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="shortcut icon" href="/image/coupon.png">
 <base href="<%=basePath%>">
 <%@ include file="/WEB-INF/jsp/header.jsp"%>
 <title>优惠券添加</title>
@@ -54,8 +55,8 @@
 					<strong>余量：${coupon.couponNum }</strong>
 				</p>
 				<p>
-					<button onclick='getCoupon("couponId=${coupon.couponId }");'><strong
-						style="font-size:120%">立即抢购</strong></button>
+					<button style="background:yellow;color:red " onclick='getCoupon("couponId=${coupon.couponId }");'><strong
+						style="font-size:120%">立即领取</strong></button>
 				</p>
 			</div>
 		</div>

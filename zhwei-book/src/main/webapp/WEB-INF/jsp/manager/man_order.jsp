@@ -25,14 +25,21 @@
 
             function onBtnChangeClick(data) {
                 var ajaxUrl = "manOrderChange";
- 
+ 				window.confirm("确定对此订单进行此操作？");
                 jQuery.ajax({
                     type: "POST",
                     url: ajaxUrl,
                     data: data,
-                    dataType: "html",
+                    dataType: "json",
                     contentType: "application/x-www-form-urlencoded; charset=utf-8",
-                    success: fnChangeFinish
+                    success: function(data){
+                    	if(data.status==200){
+                    		alert("订单已经处理！");
+                    		window.location.reload();
+                    	}else{
+                    		alert(data.msg);
+                    	}
+                    }
                 });
             }
         </script>

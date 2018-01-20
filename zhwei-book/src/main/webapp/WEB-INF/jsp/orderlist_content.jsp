@@ -22,14 +22,7 @@
 			<td><fmt:formatDate value="${order.orderTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 			<td>${order.orderAddr }</td>
 			<td>￥${order.orderPrice/10 }元</td>
-			<c:choose>
-				<c:when test=" ${order.orderAccept==1}">
-					<td>已处理</td>
-				</c:when>
-				<c:otherwise>
-					<td>未处理</td>
-				</c:otherwise>
-			</c:choose>
+			<td>${order.orderAccept==1?"已处理":"未处理" }</td>
 
 			<c:if test="${order.orderAccept==0 }">
 				<td>

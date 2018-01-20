@@ -33,6 +33,9 @@ import edu.zhwei.service.OrderService;
 @Service
 public class OrderServiceImpl implements OrderService {
 
+	private final static String ORDERACCEPT = "orderAccept";
+	private final static String ORDERDEL = "orderDel";
+	
 	@Autowired
 	private OrderMapper orderMapper;
 	@Autowired
@@ -119,5 +122,44 @@ public class OrderServiceImpl implements OrderService {
 		OrderExample example = new OrderExample();
 		List<Order> orders = orderMapper.selectByExample(example );
 		return orders;
+	}
+
+
+	//对订单的管理
+	@Override
+	public BookResult orderChange(String opt, Integer id) {
+		if(opt!=null&&opt.equals(ORDERACCEPT)){
+			return orderAccept(id);
+		}
+		if (opt!=null&&opt.equals(ORDERDEL)) {
+			return orderDel(id);
+		}
+		return null;
+	}
+
+
+	private BookResult orderAccept(Integer id) {
+		try {
+			Order order = orderMapper.selectByPrimaryKey(id);
+			order.setOrderAccept(1);
+			orderMapper.updateByPrimaryKeySelective(order);
+			return BookResult.ok();
+		} catch (Exception e) {
+			return BookResult.build(400, "未知错误发生，请联系技术人员");
+		}
+	}
+
+
+	private BookResult orderDel(Integer id) {
+		try {
+			orderMapper.deleteByPrimaryKey(id);
+			OrderdetailExample example = new OrderdetailExample();
+			edu.zhwei.pojo.OrderdetailExample.Criteria criteria = example.createCriteria();
+			criteria.andDetailOrderIdEqualTo(id);
+			detailMapper.deleteByExample(example );
+			return BookResult.ok();
+		} catch (Exception e) {
+			return BookResult.build(400, "未知错误发生，请联系技术人员");
+		}
 	}
 }

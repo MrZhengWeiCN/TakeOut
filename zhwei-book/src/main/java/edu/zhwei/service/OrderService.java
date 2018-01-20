@@ -22,4 +22,6 @@ public interface OrderService {
 	//找出所有的order
 	List<Order> findAll();
 
+	BookResult orderChange(String opt, Integer id);
+
 }

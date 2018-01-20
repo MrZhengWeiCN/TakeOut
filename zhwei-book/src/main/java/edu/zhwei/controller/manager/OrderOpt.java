@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import edu.zhwei.common.BookResult;
 import edu.zhwei.common.PageOpt;
 import edu.zhwei.pojo.Order;
 import edu.zhwei.pojo.Orderdetail;
@@ -40,5 +42,12 @@ public class OrderOpt {
 		List<Orderdetail> OrderDetails = orderService.findDetailByOrderId(orderId);
 		model.addAttribute("OrderDetails", OrderDetails);
 		return "manager/man_orderdetail";
+	}
+	
+	@RequestMapping("/manOrderChange")
+	@ResponseBody
+	public BookResult orderChange(String opt,Integer id){
+		BookResult result = orderService.orderChange(opt,id);
+		return result;
 	}
 }

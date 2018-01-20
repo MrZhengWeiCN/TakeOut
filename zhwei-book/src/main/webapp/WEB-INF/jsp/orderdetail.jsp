@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
+<link rel="shortcut icon" href="/image/order.png">
 <%-- the header --%>
 <%@ include file="/WEB-INF/jsp/header.jsp"%>
 
