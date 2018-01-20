@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.zhwei.coupon.mapper.CouponMapper" >
+  <resultMap id="BaseResultMap" type="edu.zhwei.coupon.pojo.Coupon" >
+    <id column="coupon_id" property="couponId" jdbcType="INTEGER" />
+    <result column="coupon_name" property="couponName" jdbcType="VARCHAR" />
+    <result column="coupon_desc" property="couponDesc" jdbcType="VARCHAR" />
+    <result column="coupon_start_time" property="couponStartTime" jdbcType="TIMESTAMP" />
+    <result column="coupon_end_time" property="couponEndTime" jdbcType="TIMESTAMP" />
+    <result column="coupon_discount" property="couponDiscount" jdbcType="INTEGER" />
+    <result column="coupon_threshold" property="couponThreshold" jdbcType="INTEGER" />
+    <result column="coupon_num" property="couponNum" jdbcType="INTEGER" />
+    <result column="coupon_killtime" property="couponKilltime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    coupon_id, coupon_name, coupon_desc, coupon_start_time, coupon_end_time, coupon_discount, 
+    coupon_threshold, coupon_num, coupon_killtime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="edu.zhwei.coupon.pojo.CouponExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from coupon
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from coupon
+    where coupon_id = #{couponId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from coupon
+    where coupon_id = #{couponId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="edu.zhwei.coupon.pojo.CouponExample" >
+    delete from coupon
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="couponId" parameterType="edu.zhwei.coupon.pojo.Coupon" >
+    insert into coupon (coupon_id, coupon_name, coupon_desc, 
+      coupon_start_time, coupon_end_time, coupon_discount, 
+      coupon_threshold, coupon_num, coupon_killtime
+      )
+    values (#{couponId,jdbcType=INTEGER}, #{couponName,jdbcType=VARCHAR}, #{couponDesc,jdbcType=VARCHAR}, 
+      #{couponStartTime,jdbcType=TIMESTAMP}, #{couponEndTime,jdbcType=TIMESTAMP}, #{couponDiscount,jdbcType=INTEGER}, 
+      #{couponThreshold,jdbcType=INTEGER}, #{couponNum,jdbcType=INTEGER}, #{couponKilltime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="couponId" parameterType="edu.zhwei.coupon.pojo.Coupon" >
+    insert into coupon
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="couponId != null" >
+        coupon_id,
+      </if>
+      <if test="couponName != null" >
+        coupon_name,
+      </if>
+      <if test="couponDesc != null" >
+        coupon_desc,
+      </if>
+      <if test="couponStartTime != null" >
+        coupon_start_time,
+      </if>
+      <if test="couponEndTime != null" >
+        coupon_end_time,
+      </if>
+      <if test="couponDiscount != null" >
+        coupon_discount,
+      </if>
+      <if test="couponThreshold != null" >
+        coupon_threshold,
+      </if>
+      <if test="couponNum != null" >
+        coupon_num,
+      </if>
+      <if test="couponKilltime != null" >
+        coupon_killtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="couponId != null" >
+        #{couponId,jdbcType=INTEGER},
+      </if>
+      <if test="couponName != null" >
+        #{couponName,jdbcType=VARCHAR},
+      </if>
+      <if test="couponDesc != null" >
+        #{couponDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="couponStartTime != null" >
+        #{couponStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="couponEndTime != null" >
+        #{couponEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="couponDiscount != null" >
+        #{couponDiscount,jdbcType=INTEGER},
+      </if>
+      <if test="couponThreshold != null" >
+        #{couponThreshold,jdbcType=INTEGER},
+      </if>
+      <if test="couponNum != null" >
+        #{couponNum,jdbcType=INTEGER},
+      </if>
+      <if test="couponKilltime != null" >
+        #{couponKilltime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="edu.zhwei.coupon.pojo.CouponExample" resultType="java.lang.Integer" >
+    select count(*) from coupon
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update coupon
+    <set >
+      <if test="record.couponId != null" >
+        coupon_id = #{record.couponId,jdbcType=INTEGER},
+      </if>
+      <if test="record.couponName != null" >
+        coupon_name = #{record.couponName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.couponDesc != null" >
+        coupon_desc = #{record.couponDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.couponStartTime != null" >
+        coupon_start_time = #{record.couponStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.couponEndTime != null" >
+        coupon_end_time = #{record.couponEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.couponDiscount != null" >
+        coupon_discount = #{record.couponDiscount,jdbcType=INTEGER},
+      </if>
+      <if test="record.couponThreshold != null" >
+        coupon_threshold = #{record.couponThreshold,jdbcType=INTEGER},
+      </if>
+      <if test="record.couponNum != null" >
+        coupon_num = #{record.couponNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.couponKilltime != null" >
+        coupon_killtime = #{record.couponKilltime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update coupon
+    set coupon_id = #{record.couponId,jdbcType=INTEGER},
+      coupon_name = #{record.couponName,jdbcType=VARCHAR},
+      coupon_desc = #{record.couponDesc,jdbcType=VARCHAR},
+      coupon_start_time = #{record.couponStartTime,jdbcType=TIMESTAMP},
+      coupon_end_time = #{record.couponEndTime,jdbcType=TIMESTAMP},
+      coupon_discount = #{record.couponDiscount,jdbcType=INTEGER},
+      coupon_threshold = #{record.couponThreshold,jdbcType=INTEGER},
+      coupon_num = #{record.couponNum,jdbcType=INTEGER},
+      coupon_killtime = #{record.couponKilltime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.zhwei.coupon.pojo.Coupon" >
+    update coupon
+    <set >
+      <if test="couponName != null" >
+        coupon_name = #{couponName,jdbcType=VARCHAR},
+      </if>
+      <if test="couponDesc != null" >
+        coupon_desc = #{couponDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="couponStartTime != null" >
+        coupon_start_time = #{couponStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="couponEndTime != null" >
+        coupon_end_time = #{couponEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="couponDiscount != null" >
+        coupon_discount = #{couponDiscount,jdbcType=INTEGER},
+      </if>
+      <if test="couponThreshold != null" >
+        coupon_threshold = #{couponThreshold,jdbcType=INTEGER},
+      </if>
+      <if test="couponNum != null" >
+        coupon_num = #{couponNum,jdbcType=INTEGER},
+      </if>
+      <if test="couponKilltime != null" >
+        coupon_killtime = #{couponKilltime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where coupon_id = #{couponId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.zhwei.coupon.pojo.Coupon" >
+    update coupon
+    set coupon_name = #{couponName,jdbcType=VARCHAR},
+      coupon_desc = #{couponDesc,jdbcType=VARCHAR},
+      coupon_start_time = #{couponStartTime,jdbcType=TIMESTAMP},
+      coupon_end_time = #{couponEndTime,jdbcType=TIMESTAMP},
+      coupon_discount = #{couponDiscount,jdbcType=INTEGER},
+      coupon_threshold = #{couponThreshold,jdbcType=INTEGER},
+      coupon_num = #{couponNum,jdbcType=INTEGER},
+      coupon_killtime = #{couponKilltime,jdbcType=TIMESTAMP}
+    where coupon_id = #{couponId,jdbcType=INTEGER}
+  </update>
+</mapper>

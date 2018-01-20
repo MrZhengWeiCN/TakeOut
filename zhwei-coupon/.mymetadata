@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="zhwei-coupon"
+  id="myeclipse.1516180587926"
+  context-root="/zhwei-coupon"
+  j2ee-spec="1.7"
+  archive="zhwei-coupon.war">
+  <attributes>
+    <attribute name="webrootdir" value="src/main/webapp" />
+  </attributes>
+</project-module>
+

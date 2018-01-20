@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/context
+     http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/util
+     http://www.springframework.org/schema/util/spring-util-3.0.xsd
+     http://www.springframework.org/schema/aop
+     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+     http://www.springframework.org/schema/tx
+     http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+     http://www.springframework.org/schema/rabbit
+     http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd">
+	<!-- 连接配置 -->
+	<rabbit:connection-factory id="connectionFactory"
+		host="localhost" username="guest" password="guest" />
+
+	<!-- 定义一个admin -->
+	<rabbit:admin connection-factory="connectionFactory" />
+
+	<!-- 定义一个queue,用来减少coupon的库存 -->
+	<rabbit:queue id="couponQueue" name="couponQueue" />
+	<!-- 定义一个queue,用来创建usercoupon的库存 -->
+	<rabbit:queue id="userCouponQueue" name="userCouponQueue" />
+
+	<!-- 声明一个交换机 -->
+	<rabbit:fanout-exchange name="couponExchange">
+		<rabbit:bindings>
+			<rabbit:binding queue="couponQueue"></rabbit:binding>
+		</rabbit:bindings>
+	</rabbit:fanout-exchange>
+	<rabbit:fanout-exchange name="userCouponExchange">
+		<rabbit:bindings>
+			<rabbit:binding queue="userCouponQueue"></rabbit:binding>
+		</rabbit:bindings>
+	</rabbit:fanout-exchange>
+
+	<!-- 声明一个template -->
+	<rabbit:template id="amqpTemplate" exchange="couponExchange,userCouponQueue"
+		connection-factory="connectionFactory" />
+
+	<!-- 完成队列couponQueue的监听 -->
+	<rabbit:listener-container
+		connection-factory="connectionFactory" acknowledge="auto">
+		<rabbit:listener ref="getCouponLitener" method="listen"
+			queues="couponQueue" />
+		<rabbit:listener ref="userCouponLitener" method="listen"
+			queues="userCouponQueue" />
+	</rabbit:listener-container>
+
+	<!-- 消息接收者 -->
+	<bean id="getCouponLitener" class="edu.zhwei.coupon.component.Listener"></bean>
+	<bean id="userCouponLitener" class="edu.zhwei.coupon.component.UserCouponListener"></bean>
+	<!-- 消息发送者 -->
+	<bean id="sendMessage" class="edu.zhwei.coupon.component.SendMessage"></bean>
+	<bean id="userCouponSendMessage" class="edu.zhwei.coupon.component.UserCouponSendMessage"></bean>
+</beans>
