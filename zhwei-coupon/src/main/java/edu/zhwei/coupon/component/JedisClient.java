@@ -8,7 +8,7 @@ public interface JedisClient {
 	public String hget(String key, String item);
 	public Long incr(String key);
 	public Long decr(String key);
-	public Long expire(String key, int second);
+	public Long expire(String key, int l);
 	public Long hdel(String key, String value);
 	public Long del(String string);
 }

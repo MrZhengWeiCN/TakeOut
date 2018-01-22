@@ -35,19 +35,23 @@ public class CouponServiceImpl implements CouponService {
 		try {
 			couponMapper.insert(coupon);
 			jedisClient.set("CouponNum:"+coupon.getCouponId(), coupon.getCouponNum().toString());
-			jedisClient.expire("CouponNum:"+coupon.getCouponId(), 14*24*3600);
+			Long time = (coupon.getCouponKilltime().getTime()-System.currentTimeMillis())/1000;
+			//开始上架后的一个礼拜失效
+			jedisClient.expire("CouponNum:"+coupon.getCouponId(), (int) (time+7*24*3600));
 			return BookResult.ok();
 		} catch (Exception e) {
 			return BookResult.build(400, "未知错误发生！请联系技术人员");
 		}
 	}
 
+	//优惠券首页的展示
 	@Override
 	public List<Coupon> findAll() {
 		CouponExample example = new CouponExample();
 		Criteria criteria = example.createCriteria();
-		criteria.andCouponKilltimeGreaterThanOrEqualTo(new Date(System
-				.currentTimeMillis()));
+		//条件：未过期，还有存货
+		criteria.andCouponEndTimeGreaterThan(new Date());
+		criteria.andCouponNumGreaterThanOrEqualTo(1);
 		List<Coupon> coupons = couponMapper.selectByExample(example);
 		return coupons;
 	}
@@ -136,6 +140,7 @@ public class CouponServiceImpl implements CouponService {
 		}
 	}
 
+	//找到所有的优惠券
 	@Override
 	public List<Coupon> findAllForMan() {
 		CouponExample example = new CouponExample();

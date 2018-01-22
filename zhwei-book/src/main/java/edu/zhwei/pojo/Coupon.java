@@ -21,9 +21,9 @@ public class Coupon {
 
     private Integer couponThreshold;
 
-    @DateTimeFormat(pattern="yyyy/MM/dd HH:mm:ss")
     private Integer couponNum;
 
+    @DateTimeFormat(pattern="yyyy/MM/dd HH:mm:ss")
     private Date couponKilltime;
 
     public Integer getCouponId() {
