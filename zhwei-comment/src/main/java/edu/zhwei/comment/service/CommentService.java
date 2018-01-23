@@ -14,4 +14,6 @@ public interface CommentService {
 	BookResult edit(Comment comment);
 	
 	BookResult delete(Integer commentId);
+
+	BookResult delete(Integer commentId, Integer userId);
 }

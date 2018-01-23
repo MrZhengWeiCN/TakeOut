@@ -28,6 +28,7 @@
                         <li><a href="/manMenuPageEnter">菜单管理</a></li>
                         <li><a href="/manMenuTypePageEnter">菜品类型管理</a></li>
                         <li><a href="/manCouponPageEnter">优惠券管理</a></li>
+                        <li><a href="/manCommentPageEnter">评论券管理</a></li>
                     </ul>
                 </li>
             </c:if>

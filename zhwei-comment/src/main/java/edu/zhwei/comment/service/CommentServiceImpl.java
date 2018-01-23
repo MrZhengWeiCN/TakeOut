@@ -38,9 +38,16 @@ public class CommentServiceImpl implements CommentService {
 	//增，清空有影响的redis内容
 	@Override
 	public BookResult add(Comment comment) {
-		//只需要补充评论时间即可,父id默认为0
-		comment.setCommentDate(new Date());
+		//只需要补充,父id默认为0
 		comment.setCommentParentid(0);
+		//不能重复发表评论
+		CommentExample example = new CommentExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andUserIdEqualTo(comment.getUserId());
+		criteria.andMenuIdEqualTo(comment.getMenuId());
+		List<Comment> comments = commentMapper.selectByExampleWithBLOBs(example);
+		if(comments!=null&&comments.size()>0)
+			return BookResult.build(400, "请勿重复评论！");
 		try {
 			commentMapper.insert(comment);
 			return BookResult.ok();
@@ -72,6 +79,20 @@ public class CommentServiceImpl implements CommentService {
 			return BookResult.build(400, "删除失败！");
 		}
 	}
-	
+
+	//用户删除的
+	@Override
+	public BookResult delete(Integer menuId, Integer userId) {
+		CommentExample example = new CommentExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andMenuIdEqualTo(menuId);
+		criteria.andUserIdEqualTo(userId);
+		try {
+			commentMapper.deleteByExample(example);
+			return BookResult.ok();
+		} catch (Exception e) {
+			return BookResult.build(400, "删除失败！");
+		}
+	}
 	
 }

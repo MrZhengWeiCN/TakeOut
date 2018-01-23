@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import edu.zhwei.common.PageOpt;
+import edu.zhwei.pojo.Comment;
 import edu.zhwei.pojo.Menu;
 import edu.zhwei.pojo.Menutype;
+import edu.zhwei.service.CommentService;
 import edu.zhwei.service.LogRegService;
 import edu.zhwei.service.MenuService;
 
@@ -26,6 +28,8 @@ public class PageController {
 	private MenuService menuService;
 	@Autowired
 	private LogRegService logRegService;
+	@Autowired
+	private CommentService commentService;
 
 	// 将之前登陆过的用户显示出来
 	@RequestMapping("/")
@@ -65,5 +69,17 @@ public class PageController {
 		model.addAttribute("startPage", 1);
 		model.addAttribute("currPage", page);
 		return "index";
+	}
+	
+	@RequestMapping("/menu/{menuId}")
+	public String menu(Model model,@PathVariable Integer menuId,Integer userId){
+		Menu menu = menuService.findMenuById(menuId);
+		if(menu==null){
+			return "error";
+		}
+		List<Comment> comments = commentService.findComments(menuId, userId);
+		model.addAttribute("comments", comments);
+		model.addAttribute("menu", menu);
+		return "comment/Newcomment";
 	}
 }

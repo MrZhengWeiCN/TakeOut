@@ -21,8 +21,8 @@
 			<c:forEach var="menu" items="${menus}">
 				<div class="col-md-3">
 					<div class="thumbnail">
-						<img src="${menu.menuPicAddr }" >
-						<h4 class="ib_idx_caption_h">${menu.menuName }</h4>
+						<a href="/menu/${menu.menuId }"><img src="${menu.menuPicAddr }" ></a>
+						<a href="/menu/${menu.menuId }"><h4 class="ib_idx_caption_h">${menu.menuName }</h4></a>
 						<h5 class="ib_idx_caption_h">价格:￥${menu.menuPrice/10 }元</h5>
 						<p class="ib_idx_caption_h">
 							<%-- <button class="btn btn-primary" menuName='${menu.menuName }' menuId="${menu.menuId }"

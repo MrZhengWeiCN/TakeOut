@@ -249,4 +249,11 @@ public class MenuServiceImpl implements MenuService {
 		return menuType;
 	}
 
+	//查找某一个菜单
+	@Override
+	public Menu findMenuById(Integer menuId) {
+		Menu menu = menuMapper.selectByPrimaryKey(menuId);
+		return menu;
+	}
+
 }

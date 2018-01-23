@@ -20,4 +20,6 @@ public interface MenuService {
 	
 	Menutype findMenuTypeById(Integer typeId);
 
+	Menu findMenuById(Integer menuId);
+
 }
