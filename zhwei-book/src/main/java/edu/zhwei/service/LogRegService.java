@@ -14,4 +14,5 @@ public interface LogRegService {
 	BookResult loginProcess(String userName,String userPasswd,HttpServletRequest request,HttpServletResponse response);
 	BookResult logoutProcess(HttpServletRequest request,HttpServletResponse response);
 	void validateLog(HttpServletRequest request,HttpServletResponse response);
+	
 }

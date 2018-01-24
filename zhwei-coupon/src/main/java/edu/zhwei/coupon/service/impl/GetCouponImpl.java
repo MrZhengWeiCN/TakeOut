@@ -1,6 +1,7 @@
 package edu.zhwei.coupon.service.impl;
 
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,9 @@ public class GetCouponImpl implements GetCoupon {
 		}
 		// 来到此方法之前使用拦截器确保了用户登陆了
 		Coupon coupon = couponMapper.selectByPrimaryKey(couponId);
+		if(coupon.getCouponKilltime().getTime()<new Date().getTime()){
+			return BookResult.build(400, "抢购未开始，请勿作弊！");
+		}
 		UserCoupon userCoupon = new UserCoupon();
 
 		// 第一个进入的需要把发放的优惠券数量记录下来

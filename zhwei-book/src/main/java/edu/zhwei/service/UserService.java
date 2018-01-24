@@ -12,4 +12,6 @@ public interface UserService {
 	BookResult Update(User user,HttpServletRequest request,String userOldPasswd);
 
 	List<User> findAll();
+	
+	
 }

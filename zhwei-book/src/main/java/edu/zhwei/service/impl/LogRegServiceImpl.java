@@ -102,4 +102,6 @@ public class LogRegServiceImpl implements LogRegService {
 			request.getSession().setAttribute("user", user);
 		}
 	}
+
+	
 }

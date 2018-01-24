@@ -70,14 +70,23 @@ public class PageController {
 		model.addAttribute("currPage", page);
 		return "index";
 	}
-	
+
 	@RequestMapping("/menu/{menuId}")
-	public String menu(Model model,@PathVariable Integer menuId,Integer userId){
+	public String menu(Model model, @PathVariable Integer menuId,
+			Integer userId,
+			@RequestParam(value = "page", defaultValue = "1") Integer page) {
 		Menu menu = menuService.findMenuById(menuId);
-		if(menu==null){
+		if (menu == null) {
 			return "error";
 		}
 		List<Comment> comments = commentService.findComments(menuId, userId);
+
+		int endPage = PageOpt.pageRecord(comments, 10);
+		comments = PageOpt.pageList(comments, page, 10);
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("startPage", 1);
+		model.addAttribute("currPage", page);
+
 		model.addAttribute("comments", comments);
 		model.addAttribute("menu", menu);
 		return "comment/Newcomment";
