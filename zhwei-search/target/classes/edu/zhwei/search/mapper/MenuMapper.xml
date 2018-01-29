@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.zhwei.search.mapper.MenuMapper">
+	<resultMap id="BaseResultMap" type="edu.zhwei.search.pojo.SearchMenu">
+		<id column="menu_id" property="id" jdbcType="INTEGER" />
+		<result column="menu_name" property="name" jdbcType="VARCHAR" />
+		<result column="menu_type_name" property="type" jdbcType="VARCHAR" />
+		<result column="menu_pic_addr" property="picture" jdbcType="VARCHAR" />
+		<result column="menu_price" property="price" jdbcType="INTEGER" />
+	</resultMap>
+
+	<select id="getMenuList" resultMap="BaseResultMap">
+		select
+		a.menu_id,a.menu_name,b.menu_type_name,a.menu_pic_addr,a.menu_price
+		from `menu` a left join `menutype` b on a.menu_type_id=b.menu_type_id
+	</select>
+</mapper>

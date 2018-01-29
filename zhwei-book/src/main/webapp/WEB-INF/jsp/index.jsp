@@ -11,6 +11,7 @@
 <body>
 	<%-- the navbar --%>
 	<%@ include file="/WEB-INF/jsp/navbar.jsp"%>
+	<%@ include file="/WEB-INF/jsp/search.jsp"%>
 
 	<div id="ib_idx_content_div">
 		<!-- 展示一下菜单 -->
