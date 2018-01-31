@@ -13,4 +13,9 @@ public interface MenuService  {
 	BookResult importMenus() throws SolrServerException,IOException;
 	
 	List<SearchMenu> search(String queryString) throws Exception;
+	
+	//删除
+	BookResult synchronize(Integer id);
+	
+	BookResult addMenu(Integer id);
 }

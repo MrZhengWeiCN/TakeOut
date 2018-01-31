@@ -7,4 +7,5 @@ import edu.zhwei.search.pojo.SearchMenu;
 
 public interface MenuMapper {
     List<SearchMenu> getMenuList();
+    SearchMenu getMenu(Integer id);
 }

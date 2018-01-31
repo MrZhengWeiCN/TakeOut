@@ -49,4 +49,16 @@ public class SearchController {
 			return null;
 		}
 	}
+	
+	//solr库同步数据
+	@RequestMapping("/synchronize")
+	public void synchronize(Integer id){
+		menuService.synchronize(id);
+	}
+	
+	//索引库增加一个索引数据
+	@RequestMapping("/addMenu")
+	public void addMenu(Integer id){
+		menuService.addMenu(id);
+	}
 }

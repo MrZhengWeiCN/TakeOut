@@ -1,0 +1,7 @@
+127.0.0.1 - - [29/Jan/2018:13:29:13 +0800] "GET /list HTTP/1.1" 200 748 http-bio-8081-exec-1 1764
+127.0.0.1 - - [29/Jan/2018:13:29:16 +0800] "GET /getCoupon?userId=32&couponId=17 HTTP/1.1" 200 88 http-bio-8081-exec-3 75
+127.0.0.1 - - [29/Jan/2018:13:29:17 +0800] "GET /list HTTP/1.1" 200 748 http-bio-8081-exec-5 8
+127.0.0.1 - - [29/Jan/2018:13:29:18 +0800] "GET /getCoupon?userId=32&couponId=23 HTTP/1.1" 200 88 http-bio-8081-exec-7 8
+127.0.0.1 - - [29/Jan/2018:13:29:19 +0800] "GET /list HTTP/1.1" 200 748 http-bio-8081-exec-9 9
+127.0.0.1 - - [29/Jan/2018:13:29:20 +0800] "GET /getCoupon?userId=32&couponId=24 HTTP/1.1" 200 88 http-bio-8081-exec-1 8
+127.0.0.1 - - [29/Jan/2018:13:29:21 +0800] "GET /list HTTP/1.1" 200 748 http-bio-8081-exec-3 7

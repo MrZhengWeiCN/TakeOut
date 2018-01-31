@@ -14,4 +14,11 @@
 		a.menu_id,a.menu_name,b.menu_type_name,a.menu_pic_addr,a.menu_price
 		from `menu` a left join `menutype` b on a.menu_type_id=b.menu_type_id
 	</select>
+	
+	<select id="getMenu" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		a.menu_id,a.menu_name,b.menu_type_name,a.menu_pic_addr,a.menu_price
+		from `menu` a left join `menutype` b on a.menu_type_id=b.menu_type_id
+		where a.menu_id = #{id,jdbcType=INTEGER}
+	</select>
 </mapper>
