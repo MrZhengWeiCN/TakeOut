@@ -3,18 +3,18 @@ package edu.zhwei.service.impl;
 import java.util.List;
 import java.util.UUID;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import edu.zhwei.common.BookResult;
 import edu.zhwei.common.CookieUtils;
 import edu.zhwei.common.JsonUtils;
+import edu.zhwei.common.Validator;
+import edu.zhwei.common.ValidatorFactory;
 import edu.zhwei.component.JedisClient;
 import edu.zhwei.mapper.UserMapper;
 import edu.zhwei.pojo.User;
@@ -33,21 +33,14 @@ public class LogRegServiceImpl implements LogRegService {
 	@Override
 	public BookResult validateReg(User user) {
 		//只需要校验用户名，电话
-		UserExample example = new UserExample();
-		Criteria criteria = example.createCriteria();
-		criteria.andUserNameEqualTo(user.getUserName());
-		List<User> users = userMapper.selectByExample(example);
-		if(users!=null&&users.size()>0){
+		Validator validator = ValidatorFactory.getNameValidator();
+		if(!validator.canRegist(user.getUserName())){
 			return BookResult.build(400, "用户名已被占用！");
 		}
-		example = new UserExample();
-		criteria = example.createCriteria();
-		criteria.andUserTelEqualTo(user.getUserTel());
-		users = userMapper.selectByExample(example);
-		if(users!=null&&users.size()>0){
+		validator = ValidatorFactory.getPhoneValidator();
+		if(!validator.canRegist(user.getUserTel())){
 			return BookResult.build(400, "手机号码已经被注册！");
 		}
-		//开始插入数据库中
 		try {
 			userMapper.insert(user);
 			return BookResult.ok();
@@ -102,6 +95,4 @@ public class LogRegServiceImpl implements LogRegService {
 			request.getSession().setAttribute("user", user);
 		}
 	}
-
-	
 }

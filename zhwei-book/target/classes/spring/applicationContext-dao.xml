@@ -45,4 +45,6 @@
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
       
     </bean>
+    <!-- 配置验证器 -->
+    <bean id="validatorFactory" class="edu.zhwei.common.ValidatorFactory"/>
 </beans>

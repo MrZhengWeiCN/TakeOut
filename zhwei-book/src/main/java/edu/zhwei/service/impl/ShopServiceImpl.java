@@ -6,7 +6,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -75,7 +74,6 @@ public class ShopServiceImpl implements ShopService {
 		try {
 			json = URLDecoder.decode(json,"UTF-8");
 		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		List<ShopDetail> details = JsonUtils.jsonToList(json, ShopDetail.class);

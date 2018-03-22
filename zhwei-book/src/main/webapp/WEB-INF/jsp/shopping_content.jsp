@@ -38,19 +38,23 @@
 </table>
 </br>
 <form action="/shoppingSubmit" method="post">
-	<div class="input-group">
-		<span id="ib_shop_price_span" class="input-group-addon"><img src="/image/price.png" height="24" width="24"/></span> <input
-			type="text" address='totalPrice' id="ib_shop_price_input"
-			class="form-control" value="￥${totalPrice/10 }元" readOnly="true" />
-		<input id="hidePrice" type="hidden" name="orderPrice" value="${totalPrice}">
-		<input id="oldPrice" type="hidden"  value="${totalPrice}">
-		<span >&nbsp;&nbsp;&nbsp;<img src="/image/coupon1.png" height="35" width="35"/>&nbsp;&nbsp;&nbsp;<select id="discount" name="couponId">
+<div class="input-group">
+		<span >&nbsp;&nbsp;&nbsp;<img src="/image/coupon1.png" height="35" width="35"/>&nbsp;&nbsp;&nbsp;<select id="discount" name="couponId" style="width:120px;height:40px">
 		<option value="0">未使用优惠券</option>
 		<c:forEach var="coupon" items="${coupons }">
-					<option discount="${coupon.couponDiscount }" value="${coupon.couponId }">${coupon.couponName}</option></c:forEach>
+					<option discount="${coupon.couponDiscount }"  value="${coupon.couponId }">${coupon.couponName}</option></c:forEach>
 				</select>
 		</span>
 	</div>
+	</br>
+	<div class="input-group">
+		<span id="ib_shop_price_span" class="input-group-addon"><img src="/image/price.png" height="24" width="24"/></span> <input
+			type="text" address='totalPrice' id="ib_shop_price_input" style="width:80px;height:50px"
+			class="form-control" value="￥${totalPrice/10 }元" readOnly="true" />
+		<input id="hidePrice" type="hidden" name="orderPrice" value="${totalPrice}">
+		<input id="oldPrice" type="hidden"  value="${totalPrice}">
+	</div>
+	
 	</br>
 	<div class="input-group">
 		<span id="ib_shop_addr_span" class="input-group-addon"><img src="/image/user.png" height="22" width="22"/></span> <input

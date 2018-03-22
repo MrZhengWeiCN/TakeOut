@@ -28,7 +28,7 @@ public class CouponController {
 	public String couponList(Model model,
 			@RequestParam(value = "page", defaultValue = "1") Integer page) {
 		List<Coupon> coupons = couponService.findAll();
-
+		
 		int endPage = PageOpt.pageRecord(coupons, 10);
 		coupons = PageOpt.pageList(coupons, page, 10);
 		model.addAttribute("endPage", endPage);
@@ -66,4 +66,5 @@ public class CouponController {
 		model.addAttribute("coupons", coupons);
 		return "coupon/mycoupons";
 	}
+	
 }

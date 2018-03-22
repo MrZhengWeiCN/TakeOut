@@ -52,7 +52,7 @@
 							value="${coupon.couponEndTime }" pattern="yyyy-MM-dd" /> </strong>
 				</p>
 				<p>
-					<strong>余量：${coupon.couponNum }</strong>
+					<strong>总量：${coupon.couponNum }</strong>
 				</p>
 				<c:set var="nowDate" value="<%=System.currentTimeMillis()%>"></c:set>    
 				<p>
@@ -61,7 +61,7 @@
 						<strong style="font-size:120%" ><fmt:formatDate value="${coupon.couponKilltime }" pattern="MM-dd HH:mm:ss" />&nbsp;开抢！</strong>
 					</c:when>
 					<c:otherwise>
-						<button style="background:yellow;color:red " onclick='getCoupon("couponId=${coupon.couponId }");'><strong
+						<button style="background:yellow;color:red;width:80px;height:40px " onclick='getCoupon("couponId=${coupon.couponId }");'><strong
 						style="font-size:120%">立即领取</strong></button>
 					</c:otherwise>
 				</c:choose>
