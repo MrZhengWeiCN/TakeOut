@@ -1,5 +1,7 @@
 package edu.zhwei.component.impl;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import redis.clients.jedis.JedisCluster;
@@ -54,6 +56,21 @@ public class JedisClientCluster implements JedisClient {
 	@Override
 	public Long del(String string) {
 		return jedisCluster.del(string);
+	}
+	
+	@Override
+	public Long zAdd(String key, int score, String member) {
+		return jedisCluster.zadd(key, score, member);
+	}
+
+	@Override
+	public Double zIncryBy(String key, int increment, String member) {
+		return jedisCluster.zincrby(key, increment, member);
+	}
+
+	@Override
+	public Set<String> zRevRange(String key, int start, int stop) {
+		return jedisCluster.zrevrange(key, start, stop);
 	}
 
 }

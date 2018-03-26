@@ -13,6 +13,11 @@
 	<%@ include file="/WEB-INF/jsp/navbar.jsp"%>
 	<%@ include file="/WEB-INF/jsp/search.jsp"%>
 
+	&nbsp;&nbsp;大家都在搜：
+	<c:forEach items="${wordRanges}" var="wordRange">
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/search?keyword=${wordRange}">${wordRange }
+	</c:forEach>
+
 	<div id="ib_idx_content_div">
 		<!-- 展示一下菜单 -->
 		<div class="row">

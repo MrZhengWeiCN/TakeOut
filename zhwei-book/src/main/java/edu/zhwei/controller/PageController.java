@@ -1,6 +1,7 @@
 package edu.zhwei.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import edu.zhwei.common.PageOpt;
+import edu.zhwei.component.JedisClient;
 import edu.zhwei.pojo.Comment;
 import edu.zhwei.pojo.Menu;
 import edu.zhwei.pojo.Menutype;
@@ -30,6 +32,8 @@ public class PageController {
 	private LogRegService logRegService;
 	@Autowired
 	private CommentService commentService;
+	@Autowired
+	private JedisClient jedisClient;
 
 	// 将之前登陆过的用户显示出来
 	@RequestMapping("/")
@@ -46,6 +50,10 @@ public class PageController {
 		List<Menu> menus = menuService.findAllMenu();
 		int endPage = PageOpt.pageRecord(menus, PageOpt.INDEX);
 		menus = PageOpt.pageList(menus, page, PageOpt.INDEX);
+
+		Set<String> wordRanges = jedisClient.zRevRange("searchWord", 0, 3);// 找到最热门的搜索关键词，并且列出来
+
+		model.addAttribute("wordRanges", wordRanges);
 		model.addAttribute("endPage", endPage);
 		model.addAttribute("startPage", 1);
 		model.addAttribute("menus", menus);
@@ -90,5 +98,10 @@ public class PageController {
 		model.addAttribute("comments", comments);
 		model.addAttribute("menu", menu);
 		return "comment/Newcomment";
+	}
+
+	@RequestMapping("/frequentError")
+	public String errorPage() {
+		return "frequentError";
 	}
 }

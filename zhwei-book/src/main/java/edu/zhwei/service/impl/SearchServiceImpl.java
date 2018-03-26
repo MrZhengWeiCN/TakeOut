@@ -6,15 +6,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.zhwei.common.HttpClientUtil;
 import edu.zhwei.common.JsonUtils;
+import edu.zhwei.component.JedisClient;
 import edu.zhwei.pojo.SearchMenu;
 import edu.zhwei.service.SearchService;
 
 @Service
 public class SearchServiceImpl implements SearchService {
+	
 
 	@Override
 	public List<SearchMenu> search(String keyword) {

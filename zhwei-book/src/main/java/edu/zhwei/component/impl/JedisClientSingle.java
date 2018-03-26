@@ -1,5 +1,7 @@
 package edu.zhwei.component.impl;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import redis.clients.jedis.Jedis;
@@ -83,5 +85,30 @@ public class JedisClientSingle implements JedisClient {
 		jedis.close();
 		return result;
 	}
+	
+	@Override
+	public Long zAdd(String key, int score, String member) {
+		Jedis jedis = pool.getResource();
+		Long zadd = jedis.zadd(key, score, member);
+		jedis.close();
+		return zadd;
+	}
+
+	@Override
+	public Double zIncryBy(String key, int increment, String member) {
+		Jedis jedis = pool.getResource();
+		Double zincrby = jedis.zincrby(key, increment, member);
+		jedis.close();
+		return zincrby;
+	}
+
+	@Override
+	public Set<String> zRevRange(String key, int start, int stop) {
+		Jedis jedis = pool.getResource();
+		Set<String> zrevrange = jedis.zrevrange(key, start, stop);
+		jedis.close();
+		return zrevrange;
+	}
+
 
 }
