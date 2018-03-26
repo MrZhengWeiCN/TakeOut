@@ -51,7 +51,7 @@ public class GetCouponImpl implements GetCoupon {
 		}
 		// 来到此方法之前使用拦截器确保了用户登陆了
 		Coupon coupon = couponMapper.selectByPrimaryKey(couponId);
-		if(coupon.getCouponKilltime().getTime()<new Date().getTime()){
+		if(new Date().getTime()<coupon.getCouponKilltime().getTime()){
 			return BookResult.build(400, "抢购未开始，请勿作弊！");
 		}
 		UserCoupon userCoupon = new UserCoupon();

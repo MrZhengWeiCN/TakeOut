@@ -1,6 +1,7 @@
 package edu.zhwei.service.impl;
 
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -58,7 +59,7 @@ public class MenuServiceImpl implements MenuService {
 		}
 		if (opt.equals(DEL)) {
 			jedisClient.del(menukey);
-			jedisClient.del(menuTypemenukey+":"+id);
+			jedisClient.del(menuTypemenukey + ":" + id);
 			return del(id);
 		}
 		return null;
@@ -86,7 +87,9 @@ public class MenuServiceImpl implements MenuService {
 			types = typeMapper.selectByExample(example);
 			String json = JsonUtils.objectToJson(types);
 			jedisClient.set(menuTypekey, json);
-			jedisClient.expire(menuTypekey, 24 * 60 * 60);
+			Random ra = new Random();
+			int random = ra.nextInt(30);// 随机的分钟数
+			jedisClient.expire(menuTypekey, 24 * (60 + random) * 60);
 			return types;
 		}
 	}
@@ -132,9 +135,9 @@ public class MenuServiceImpl implements MenuService {
 	// 关于菜单的操作
 	@Override
 	public BookResult menuChange(String opt, Menu menu, Integer id) {
-		//刪除所有和菜單有關的緩存
+		// 刪除所有和菜單有關的緩存
 		jedisClient.del(menukey);
-		
+
 		jedisClient.del(menuTypekey);
 		if (opt.equals(MENUADD)) {
 			return menuAdd(menu);
@@ -166,7 +169,7 @@ public class MenuServiceImpl implements MenuService {
 		// 更新
 		try {
 			menuMapper.updateByPrimaryKey(menu);
-			jedisClient.del(menuTypemenukey+":"+oldMenu.getMenuTypeId());
+			jedisClient.del(menuTypemenukey + ":" + oldMenu.getMenuTypeId());
 			return BookResult.ok();
 		} catch (Exception e) {
 			return BookResult.build(400, "未知错误发生！");
@@ -176,7 +179,7 @@ public class MenuServiceImpl implements MenuService {
 	private BookResult menuDel(Integer id) {
 		try {
 			Menu menu = menuMapper.selectByPrimaryKey(id);
-			jedisClient.del(menuTypemenukey+":"+menu.getMenuTypeId());
+			jedisClient.del(menuTypemenukey + ":" + menu.getMenuTypeId());
 			menuMapper.deleteByPrimaryKey(id);
 			return BookResult.ok();
 		} catch (Exception e) {
@@ -194,8 +197,8 @@ public class MenuServiceImpl implements MenuService {
 			return BookResult.build(400, "菜品已存在，无需重复添加！");
 		try {
 			menuMapper.insert(menu);
-			//清空redis的内容
-			jedisClient.del(menuTypemenukey+":"+menu.getMenuTypeId());
+			// 清空redis的内容
+			jedisClient.del(menuTypemenukey + ":" + menu.getMenuTypeId());
 			// 类型数量加一
 			Menutype type = typeMapper.selectByPrimaryKey(menu.getMenuTypeId());
 			type.setMenuTypeNum(type.getMenuTypeNum() + 1);
@@ -210,15 +213,17 @@ public class MenuServiceImpl implements MenuService {
 	public List<Menu> findAllMenu() {
 		List<Menu> types;
 		String string = jedisClient.get(menukey);
-		if(string!=null){
+		if (string != null) {
 			types = JsonUtils.jsonToList(string, Menu.class);
 			return types;
-		}else {
+		} else {
 			MenuExample example = new MenuExample();
 			types = menuMapper.selectByExample(example);
 			String json = JsonUtils.objectToJson(types);
 			jedisClient.set(menukey, json);
-			jedisClient.expire(menuTypekey, 24 * 60 * 60);
+			Random ra = new Random();
+			int random = ra.nextInt(30);
+			jedisClient.expire(menuTypekey, 24 * (60+random) * 60);
 			return types;
 		}
 	}
@@ -227,17 +232,21 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	public List<Menu> selectTypeMenu(Integer typeId) {
 		List<Menu> menus;
-		String string = jedisClient.get(menuTypemenukey+":"+typeId);
-		if(string!=null){
+		String string = jedisClient.get(menuTypemenukey + ":" + typeId);
+		if (string != null) {
 			menus = JsonUtils.jsonToList(string, Menu.class);
 			return menus;
-		}else {
+		} else {
 			MenuExample example = new MenuExample();
-			edu.zhwei.pojo.MenuExample.Criteria criteria = example.createCriteria();
+			edu.zhwei.pojo.MenuExample.Criteria criteria = example
+					.createCriteria();
 			criteria.andMenuTypeIdEqualTo(typeId);
 			menus = menuMapper.selectByExample(example);
-			jedisClient.set(menuTypemenukey+":"+typeId, JsonUtils.objectToJson(menus));
-			jedisClient.expire(menuTypemenukey+":"+typeId, 24*60*60);
+			jedisClient.set(menuTypemenukey + ":" + typeId,
+					JsonUtils.objectToJson(menus));
+			Random ra = new Random();
+			int random = ra.nextInt(30);
+			jedisClient.expire(menuTypemenukey + ":" + typeId, 24 * (60+random) * 60);
 			return menus;
 		}
 	}
@@ -249,7 +258,7 @@ public class MenuServiceImpl implements MenuService {
 		return menuType;
 	}
 
-	//查找某一个菜单
+	// 查找某一个菜单
 	@Override
 	public Menu findMenuById(Integer menuId) {
 		Menu menu = menuMapper.selectByPrimaryKey(menuId);

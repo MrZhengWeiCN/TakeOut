@@ -18,42 +18,42 @@ import edu.zhwei.service.CommentService;
 @Service
 public class CommentServiceImpl implements CommentService {
 
-
-	//发表评论
+	// 发表评论
 	@Override
 	public BookResult makeComment(Comment comment) {
 		comment.setCommentDate(new Date());
 		String commentJson = JsonUtils.objectToJson(comment);
-		try {
-			/*commentJson = URLEncoder.encode(commentJson, "utf-8");*/
-			String doPostResult= HttpClientUtil.doPostJson("http://localhost:8082/makeComment", commentJson);
-			BookResult result = JsonUtils.jsonToPojo(doPostResult, BookResult.class);
-			return result;
-		} catch (Exception e) {
-			return BookResult.build(400, "中文转换出了问题，请联系技术人员");
-		}
+		/* commentJson = URLEncoder.encode(commentJson, "utf-8"); */
+		String doPostResult = HttpClientUtil.doPostJson(
+				"http://localhost:8082/makeComment", commentJson);
+		BookResult result = JsonUtils
+				.jsonToPojo(doPostResult, BookResult.class);
+		return result;
 	}
 
-	//查找评论
+	// 查找评论
 	@Override
 	public List<Comment> findComments(Integer menuId, Integer userId) {
 		Map<String, String> param = new HashMap<String, String>();
-		if(menuId!=null)
+		if (menuId != null)
 			param.put("menuId", menuId.toString());
-		if(userId!=null)
+		if (userId != null)
 			param.put("userId", userId.toString());
-		String commentsJson = HttpClientUtil.doGet("http://localhost:8082/find",param);
-		List<Comment> comments = JsonUtils.jsonToList(commentsJson, Comment.class);
+		String commentsJson = HttpClientUtil.doGet(
+				"http://localhost:8082/find", param);
+		List<Comment> comments = JsonUtils.jsonToList(commentsJson,
+				Comment.class);
 		return comments;
 	}
 
-	//删除评论
+	// 删除评论
 	@Override
 	public BookResult delComment(Integer menuId, Integer userId) {
 		Map<String, String> param = new HashMap<>();
 		param.put("menuId", menuId.toString());
 		param.put("userId", userId.toString());
-		String resultJson = HttpClientUtil.doPost("http://localhost:8082/delComment", param );
+		String resultJson = HttpClientUtil.doPost(
+				"http://localhost:8082/delComment", param);
 		BookResult result = JsonUtils.jsonToPojo(resultJson, BookResult.class);
 		return result;
 	}
@@ -62,9 +62,9 @@ public class CommentServiceImpl implements CommentService {
 	public BookResult manDelComment(Integer commentId) {
 		Map<String, String> param = new HashMap<>();
 		param.put("commentId", commentId.toString());
-		String resultJson = HttpClientUtil.doPost("http://localhost:8082/manDelComment", param );
+		String resultJson = HttpClientUtil.doPost(
+				"http://localhost:8082/manDelComment", param);
 		BookResult result = JsonUtils.jsonToPojo(resultJson, BookResult.class);
 		return result;
 	}
-
 }

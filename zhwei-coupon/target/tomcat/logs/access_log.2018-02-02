@@ -1,0 +1,16 @@
+127.0.0.1 - - [02/Feb/2018:16:33:02 +0800] "GET /mycoupon/32?condition=1 HTTP/1.1" 200 1175 http-bio-8081-exec-1 1714
+127.0.0.1 - - [02/Feb/2018:16:33:22 +0800] "GET /mycoupon/32?condition=1 HTTP/1.1" 200 1175 http-bio-8081-exec-3 13
+127.0.0.1 - - [02/Feb/2018:16:38:21 +0800] "GET /mycoupon/32?condition=1 HTTP/1.1" 200 1175 http-bio-8081-exec-5 14
+127.0.0.1 - - [02/Feb/2018:16:41:23 +0800] "GET /mycoupon/32?condition=1 HTTP/1.1" 200 1175 http-bio-8081-exec-7 20
+127.0.0.1 - - [02/Feb/2018:16:41:46 +0800] "GET /mycoupon/32?condition=1 HTTP/1.1" 200 1175 http-bio-8081-exec-9 10
+127.0.0.1 - - [02/Feb/2018:16:42:01 +0800] "GET /mycoupon/32?condition=1 HTTP/1.1" 200 1175 http-bio-8081-exec-1 12
+127.0.0.1 - - [02/Feb/2018:16:42:16 +0800] "GET /mycoupon/32?condition=1 HTTP/1.1" 200 1175 http-bio-8081-exec-3 9
+127.0.0.1 - - [02/Feb/2018:16:42:49 +0800] "GET /list HTTP/1.1" 200 283 http-bio-8081-exec-5 917
+127.0.0.1 - - [02/Feb/2018:16:43:05 +0800] "GET /mycoupon/32 HTTP/1.1" 200 1889 http-bio-8081-exec-7 10
+127.0.0.1 - - [02/Feb/2018:16:43:11 +0800] "GET /mycoupon/32?condition=1 HTTP/1.1" 200 1175 http-bio-8081-exec-9 12
+127.0.0.1 - - [02/Feb/2018:16:43:32 +0800] "GET /mycoupon/34?condition=1 HTTP/1.1" 200 2177 http-bio-8081-exec-2 11
+127.0.0.1 - - [02/Feb/2018:16:43:43 +0800] "GET /mycoupon/34?condition=1 HTTP/1.1" 200 2177 http-bio-8081-exec-4 11
+127.0.0.1 - - [02/Feb/2018:16:43:54 +0800] "GET /deleteUserCop?userId=34&couponId=17 HTTP/1.1" 200 48 http-bio-8081-exec-6 361
+127.0.0.1 - - [02/Feb/2018:16:45:27 +0800] "GET /mycoupon/32?condition=1 HTTP/1.1" 200 1175 http-bio-8081-exec-8 10
+127.0.0.1 - - [02/Feb/2018:16:45:48 +0800] "GET /list HTTP/1.1" 200 283 http-bio-8081-exec-10 13
+127.0.0.1 - - [02/Feb/2018:16:47:37 +0800] "GET /list HTTP/1.1" 200 283 http-bio-8081-exec-1 10

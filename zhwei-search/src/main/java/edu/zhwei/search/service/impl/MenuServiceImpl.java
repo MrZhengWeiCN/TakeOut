@@ -2,6 +2,7 @@ package edu.zhwei.search.service.impl;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.zhwei.search.commons.BookResult;
+import edu.zhwei.search.commons.JsonUtils;
+import edu.zhwei.search.component.JedisClient;
 import edu.zhwei.search.dao.SearchDao;
 import edu.zhwei.search.mapper.MenuMapper;
 import edu.zhwei.search.pojo.SearchMenu;
@@ -25,6 +28,8 @@ public class MenuServiceImpl implements MenuService {
 	private SolrServer solrServer;
 	@Autowired
 	private SearchDao searchDao;
+	@Autowired
+	private JedisClient jedisClient;
 
 	@Override
 	public BookResult importMenus() {
@@ -53,22 +58,35 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	public List<SearchMenu> search(String queryString)
 			throws Exception {
-		// 创建查询条件
-		SolrQuery solrQuery = new SolrQuery();
-		solrQuery.setQuery(queryString);
-		// 设置分页条件
-		/*solrQuery.setStart((page - 1) * rows);
+		//为了解决提高响应速度，对搜索实行缓存
+		String searchResult = jedisClient.get("search:"+queryString);
+		List<SearchMenu> result = null;
+		if(searchResult==null){
+			// 创建查询条件
+			SolrQuery solrQuery = new SolrQuery();
+			solrQuery.setQuery(queryString);
+			// 设置分页条件
+			/*solrQuery.setStart((page - 1) * rows);
 		solrQuery.setRows(rows);*/
-		// 设置默认搜索域
-		solrQuery.set("df", "menu_keywords");
-		//设置高亮
-		solrQuery.setHighlight(true);
-		solrQuery.addHighlightField("menu_name");
-		solrQuery.addHighlightField("menu_type");
-		solrQuery.setHighlightSimplePre("<strong style='color:red'>");
-		solrQuery.setHighlightSimplePost("</strong>");
-
-		List<SearchMenu> result = searchDao.search(solrQuery);
+			// 设置默认搜索域
+			solrQuery.set("df", "menu_keywords");
+			//设置高亮
+			solrQuery.setHighlight(true);
+			solrQuery.addHighlightField("menu_name");
+			solrQuery.addHighlightField("menu_type");
+			solrQuery.setHighlightSimplePre("<strong style='color:red'>");
+			solrQuery.setHighlightSimplePost("</strong>");
+			result = searchDao.search(solrQuery);
+			String resultToJson = JsonUtils.objectToJson(result);
+			jedisClient.set("search:"+queryString, resultToJson);
+		}else {
+			result = JsonUtils.jsonToList(searchResult, SearchMenu.class);
+		}
+		Random ra = new Random();
+		int random = ra.nextInt(30);
+		jedisClient.expire("search:"+queryString,12*60*60+random*60);
+		//对搜索词进行频率+1
+		jedisClient.zIncryBy("searchWord", 1, queryString);
 		return result;
 	}
 

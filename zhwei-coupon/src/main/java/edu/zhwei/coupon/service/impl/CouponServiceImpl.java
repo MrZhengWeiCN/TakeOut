@@ -2,13 +2,14 @@ package edu.zhwei.coupon.service.impl;
 
 import java.util.Date;
 import java.util.List;
-
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.zhwei.coupon.common.BookResult;
 import edu.zhwei.coupon.common.CookieUtils;
+import edu.zhwei.coupon.common.JsonUtils;
 import edu.zhwei.coupon.component.JedisClient;
 import edu.zhwei.coupon.mapper.CouponMapper;
 import edu.zhwei.coupon.mapper.UserCouponMapper;
@@ -29,33 +30,48 @@ public class CouponServiceImpl implements CouponService {
 	private UserCouponMapper userCouponMapper;
 	@Autowired
 	private JedisClient jedisClient;
-	
+
 	@Override
 	public BookResult addCoupon(Coupon coupon) {
 		try {
 			couponMapper.insert(coupon);
-			jedisClient.set("CouponNum:"+coupon.getCouponId(), coupon.getCouponNum().toString());
-			Long time = (coupon.getCouponKilltime().getTime()-System.currentTimeMillis())/1000;
-			//开始上架后的一个礼拜失效
-			jedisClient.expire("CouponNum:"+coupon.getCouponId(), (int) (time+7*24*3600));
+			jedisClient.set("CouponNum:" + coupon.getCouponId(), coupon
+					.getCouponNum().toString());
+			Long time = (coupon.getCouponKilltime().getTime() - System
+					.currentTimeMillis()) / 1000;
+			// 开始上架后的一个礼拜失效
+			Random ra = new Random();
+			int random = ra.nextInt(30);
+			jedisClient.expire("CouponNum:" + coupon.getCouponId(),
+					(int) (time + 7 * 24 * 3600 + random * 3600));
+			jedisClient.del("CouponList");// 缓存需要同步
 			return BookResult.ok();
 		} catch (Exception e) {
 			return BookResult.build(400, "未知错误发生！请联系技术人员");
 		}
 	}
 
-	//优惠券首页的展示
+	// 优惠券首页的展示
+	// 这里压力会很大，在这里高并发下会出问题，因为会重复刷新数据库
+	// 直接进行缓存，但是不要求显示最新的数据库存量
 	@Override
 	public List<Coupon> findAll() {
+		String couponList_redis = jedisClient.get("CouponList");
+		if (couponList_redis != null) {
+			List<Coupon> jsonToList = JsonUtils.jsonToList(couponList_redis,
+					Coupon.class);
+			return jsonToList;
+		}
 		CouponExample example = new CouponExample();
 		Criteria criteria = example.createCriteria();
-		//条件：未过期，还有存货
+		// 条件：未过期，还有存货
 		criteria.andCouponEndTimeGreaterThan(new Date());
 		criteria.andCouponNumGreaterThanOrEqualTo(1);
 		List<Coupon> coupons = couponMapper.selectByExample(example);
+		jedisClient.set("CouponList", JsonUtils.objectToJson(coupons));
 		return coupons;
 	}
-	
+
 	@Override
 	public BookResult getCoupon(Integer couponId, Integer userId) {
 		// 确保没有重复领取
@@ -73,8 +89,8 @@ public class CouponServiceImpl implements CouponService {
 		Coupon coupon = couponMapper.selectByPrimaryKey(couponId);
 		UserCoupon userCoupon = new UserCoupon();
 		if (coupon.getCouponNum() < 1) {
-			//不能这样简单的计算库存
-			//应该使用redis的单线程计算已经处理的订单
+			// 不能这样简单的计算库存
+			// 应该使用redis的单线程计算已经处理的订单
 			return BookResult.build(400, "很遗憾，优惠券已领完！");
 		}
 		// 进行关联
@@ -91,10 +107,10 @@ public class CouponServiceImpl implements CouponService {
 		userCoupon.setCouponDiscount(coupon.getCouponDiscount());
 		userCoupon.setCouponStatus(0);
 		try {
-			//减库存这一步应该给rabbitmq处理
-			coupon.setCouponNum(coupon.getCouponNum()-1);
+			// 减库存这一步应该给rabbitmq处理
+			coupon.setCouponNum(coupon.getCouponNum() - 1);
 			couponMapper.updateByPrimaryKeySelective(coupon);
-			
+
 			userCouponMapper.insert(userCoupon);
 			return BookResult.ok();
 		} catch (Exception e) {
@@ -121,15 +137,16 @@ public class CouponServiceImpl implements CouponService {
 		return coupons;
 	}
 
-	//用过使用优惠券，别搞错了
+	// 用过使用优惠券，别搞错了
 	@Override
 	public BookResult deleteUserCop(Integer userId, Integer couponId) {
 		UserCouponExample example = new UserCouponExample();
-		edu.zhwei.coupon.pojo.UserCouponExample.Criteria criteria = example.createCriteria();
+		edu.zhwei.coupon.pojo.UserCouponExample.Criteria criteria = example
+				.createCriteria();
 		criteria.andUserIdEqualTo(userId);
 		criteria.andCouponIdEqualTo(couponId);
 		try {
-			List<UserCoupon> coupon = userCouponMapper.selectByExample(example );
+			List<UserCoupon> coupon = userCouponMapper.selectByExample(example);
 			for (UserCoupon userCoupon : coupon) {
 				userCoupon.setCouponStatus(1);
 				userCouponMapper.updateByPrimaryKeySelective(userCoupon);
@@ -140,40 +157,39 @@ public class CouponServiceImpl implements CouponService {
 		}
 	}
 
-	//找到所有的优惠券
+	// 找到所有的优惠券
 	@Override
 	public List<Coupon> findAllForMan() {
 		CouponExample example = new CouponExample();
-		List<Coupon> coupons = couponMapper.selectByExample(example );
+		List<Coupon> coupons = couponMapper.selectByExample(example);
 		return coupons;
 	}
 
-	
-	
 	@Override
 	public BookResult manDeleteCoupon(Integer couponId) {
 		try {
-			jedisClient.del("CouponNum:"+couponId);
+			jedisClient.del("CouponNum:" + couponId);
 			couponMapper.deleteByPrimaryKey(couponId);
 			return BookResult.ok();
 		} catch (Exception e) {
-			return BookResult.build(400,"未知错误发生，联系技术人员！");
+			return BookResult.build(400, "未知错误发生，联系技术人员！");
 		}
 	}
 
-	//用户删除优惠券
+	// 用户删除优惠券
 	@Override
 	public BookResult userDeleteCoupon(Integer couponId, Integer userId) {
 		UserCouponExample example = new UserCouponExample();
-		edu.zhwei.coupon.pojo.UserCouponExample.Criteria criteria = example.createCriteria();
+		edu.zhwei.coupon.pojo.UserCouponExample.Criteria criteria = example
+				.createCriteria();
 		criteria.andUserIdEqualTo(userId);
 		criteria.andCouponIdEqualTo(couponId);
 		try {
-			userCouponMapper.deleteByExample(example );
+			userCouponMapper.deleteByExample(example);
 			return BookResult.ok();
 		} catch (Exception e) {
-			return BookResult.build(400,"未知错误发生，联系技术人员！");
+			return BookResult.build(400, "未知错误发生，联系技术人员！");
 		}
-	} 
+	}
 
 }
