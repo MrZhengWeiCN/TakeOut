@@ -31,6 +31,7 @@ public class MenuServiceImpl implements MenuService {
 	@Autowired
 	private JedisClient jedisClient;
 
+
 	@Override
 	public BookResult importMenus() {
 		List<SearchMenu> menuList = menuMapper.getMenuList();
@@ -56,36 +57,43 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
-	public List<SearchMenu> search(String queryString)
-			throws Exception {
-		//为了解决提高响应速度，对搜索实行缓存
-		String searchResult = jedisClient.get("search:"+queryString);
+	public List<SearchMenu> search(String queryString) throws Exception {
+		// 为了解决提高响应速度，对搜索实行缓存
+		String searchResult = jedisClient.get("search:" + queryString);
 		List<SearchMenu> result = null;
-		if(searchResult==null){
-			// 创建查询条件
-			SolrQuery solrQuery = new SolrQuery();
-			solrQuery.setQuery(queryString);
-			// 设置分页条件
-			/*solrQuery.setStart((page - 1) * rows);
-		solrQuery.setRows(rows);*/
-			// 设置默认搜索域
-			solrQuery.set("df", "menu_keywords");
-			//设置高亮
-			solrQuery.setHighlight(true);
-			solrQuery.addHighlightField("menu_name");
-			solrQuery.addHighlightField("menu_type");
-			solrQuery.setHighlightSimplePre("<strong style='color:red'>");
-			solrQuery.setHighlightSimplePost("</strong>");
-			result = searchDao.search(solrQuery);
-			String resultToJson = JsonUtils.objectToJson(result);
-			jedisClient.set("search:"+queryString, resultToJson);
-		}else {
+		//解决缓存击穿，只有第一查询的才能进入数据库查询，其他的全都从数据查询
+		if (searchResult == null) {
+			synchronized (this) {//由于synchronized是由可见性的
+				if (searchResult == null) {
+					// 创建查询条件
+					SolrQuery solrQuery = new SolrQuery();
+					solrQuery.setQuery(queryString);
+					// 设置分页条件
+					/*
+					 * solrQuery.setStart((page - 1) * rows);
+					 * solrQuery.setRows(rows);
+					 */
+					// 设置默认搜索域
+					solrQuery.set("df", "menu_keywords");
+					// 设置高亮
+					solrQuery.setHighlight(true);
+					solrQuery.addHighlightField("menu_name");
+					solrQuery.addHighlightField("menu_type");
+					solrQuery
+							.setHighlightSimplePre("<strong style='color:red'>");
+					solrQuery.setHighlightSimplePost("</strong>");
+					result = searchDao.search(solrQuery);
+					String resultToJson = JsonUtils.objectToJson(result);
+					jedisClient.set("search:" + queryString, resultToJson);
+				}
+			}
+		} else {
 			result = JsonUtils.jsonToList(searchResult, SearchMenu.class);
 		}
 		Random ra = new Random();
 		int random = ra.nextInt(30);
-		jedisClient.expire("search:"+queryString,12*60*60+random*60);
-		//对搜索词进行频率+1
+		jedisClient.expire("search:" + queryString, 12 * 60 * 60 + random * 60);
+		// 对搜索词进行频率+1
 		jedisClient.zIncryBy("searchWord", 1, queryString);
 		return result;
 	}
@@ -110,7 +118,7 @@ public class MenuServiceImpl implements MenuService {
 			return BookResult.ok();
 		} catch (SolrServerException | IOException e) {
 			e.printStackTrace();
-			return BookResult.build(400,"发生未知错误，请联系技术人员解决");
+			return BookResult.build(400, "发生未知错误，请联系技术人员解决");
 		}
 	}
 }
